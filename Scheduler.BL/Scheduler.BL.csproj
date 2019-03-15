@@ -4,4 +4,30 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.2" />
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="User\" />
+    <Folder Include="Team\" />
+    <Folder Include="Schedule\" />
+    <Folder Include="User\Dto\" />
+    <Folder Include="User\Interface\" />
+    <Folder Include="User\Implementation\" />
+    <Folder Include="User\Interface\Models\" />
+    <Folder Include="Shared\" />
+    <Folder Include="Shared\Models\" />
+    <Folder Include="Team\Dto\" />
+    <Folder Include="Team\Implementation\" />
+    <Folder Include="Team\Interface\" />
+    <Folder Include="Team\Interface\Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Scheduler.Domain\Scheduler.Domain.csproj" />
+    <ProjectReference Include="..\Scheduler.Data\Scheduler.Data.csproj" />
+  </ItemGroup>
 </Project>
