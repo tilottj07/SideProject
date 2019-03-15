@@ -16,22 +16,92 @@ namespace Scheduler.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.2-servicing-10034");
 
+            modelBuilder.Entity("Scheduler.Domain.Category", b =>
+                {
+                    b.Property<string>("CategoryId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryDescription");
+
+                    b.Property<string>("CategoryEmail");
+
+                    b.Property<string>("CategoryName");
+
+                    b.Property<DateTime>("ChangeDate");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<DateTime?>("DeleteDate");
+
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.HasKey("CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Scheduler.Domain.Location", b =>
+                {
+                    b.Property<string>("LocationId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<DateTime>("ChangeDate");
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Country");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<DateTime?>("DeleteDate");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LocationName");
+
+                    b.Property<string>("StateRegion");
+
+                    b.Property<string>("ZipCode");
+
+                    b.HasKey("LocationId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("Locations");
+                });
+
             modelBuilder.Entity("Scheduler.Domain.Schedule", b =>
                 {
                     b.Property<string>("ScheduleId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("ChangeDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 704, DateTimeKind.Utc).AddTicks(4740));
+                    b.Property<DateTime>("ChangeDate");
 
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 704, DateTimeKind.Utc).AddTicks(5040));
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
                     b.Property<DateTime>("EndDate");
+
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
 
                     b.Property<DateTime>("StartDate");
 
@@ -42,6 +112,8 @@ namespace Scheduler.Data.Migrations
                     b.Property<string>("UserId");
 
                     b.HasKey("ScheduleId");
+
+                    b.HasIndex("ScheduleId");
 
                     b.HasIndex("TeamId", "StartDate", "EndDate");
 
@@ -55,13 +127,9 @@ namespace Scheduler.Data.Migrations
                     b.Property<string>("ScheduleNoteId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("ChangeDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 704, DateTimeKind.Utc).AddTicks(7550));
+                    b.Property<DateTime>("ChangeDate");
 
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 704, DateTimeKind.Utc).AddTicks(7860));
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("CreateUserId");
 
@@ -69,9 +137,7 @@ namespace Scheduler.Data.Migrations
 
                     b.Property<string>("LastUpdateUserId");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 704, DateTimeKind.Utc).AddTicks(8060));
+                    b.Property<DateTime>("LastUpdated");
 
                     b.Property<string>("Note");
 
@@ -81,6 +147,8 @@ namespace Scheduler.Data.Migrations
 
                     b.HasIndex("ScheduleId");
 
+                    b.HasIndex("ScheduleNoteId");
+
                     b.ToTable("ScheduleNotes");
                 });
 
@@ -89,29 +157,33 @@ namespace Scheduler.Data.Migrations
                     b.Property<string>("TeamId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("ChangeDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 703, DateTimeKind.Utc).AddTicks(6890));
+                    b.Property<DateTime>("ChangeDate");
 
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 703, DateTimeKind.Utc).AddTicks(7200));
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
-                    b.Property<string>("TeamCategoryId");
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LocationId");
 
                     b.Property<string>("TeamDescription");
 
                     b.Property<string>("TeamEmail");
 
-                    b.Property<string>("TeamLeader");
+                    b.Property<string>("TeamLeaderId");
 
                     b.Property<string>("TeamName");
 
                     b.HasKey("TeamId");
 
-                    b.HasIndex("TeamCategoryId");
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Teams");
                 });
@@ -121,77 +193,83 @@ namespace Scheduler.Data.Migrations
                     b.Property<string>("TeamCategoryId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CategoryDescription");
+                    b.Property<string>("CategoryId");
 
-                    b.Property<string>("CategoryEmail");
+                    b.Property<DateTime>("ChangeDate");
 
-                    b.Property<string>("CategoryName");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<DateTime>("ChangeDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 704, DateTimeKind.Utc).AddTicks(2190));
-
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 704, DateTimeKind.Utc).AddTicks(2500));
+                    b.Property<string>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("TeamId");
+
                     b.HasKey("TeamCategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("TeamCategoryId");
+
+                    b.HasIndex("TeamId", "CategoryId");
 
                     b.ToTable("TeamCategories");
                 });
 
             modelBuilder.Entity("Scheduler.Domain.TeamUser", b =>
                 {
+                    b.Property<string>("TeamUserId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ChangeDate");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime?>("DeleteDate");
+
                     b.Property<string>("TeamId");
 
                     b.Property<string>("UserId");
 
-                    b.Property<DateTime>("ChangeDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 703, DateTimeKind.Utc).AddTicks(9500));
+                    b.HasKey("TeamUserId");
 
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 703, DateTimeKind.Utc).AddTicks(9800));
-
-                    b.Property<DateTime?>("DeleteDate");
-
-                    b.Property<string>("TeamUserId")
-                        .IsRequired();
-
-                    b.HasKey("TeamId", "UserId");
-
-                    b.HasAlternateKey("TeamUserId");
+                    b.HasIndex("TeamUserId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("TeamId", "UserId");
 
                     b.ToTable("TeamUsers");
                 });
 
             modelBuilder.Entity("Scheduler.Domain.User", b =>
                 {
-                    b.Property<string>("UserName")
+                    b.Property<string>("UserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("BackupEmail");
 
                     b.Property<string>("BackupPhoneNumber");
 
-                    b.Property<DateTime>("ChangeDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 698, DateTimeKind.Utc).AddTicks(7710));
+                    b.Property<DateTime>("ChangeDate");
 
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 703, DateTimeKind.Utc).AddTicks(1000));
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
+
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
 
                     b.Property<string>("MiddleInitial");
 
@@ -203,12 +281,13 @@ namespace Scheduler.Data.Migrations
 
                     b.Property<string>("PrimaryPhoneNumber");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<string>("UserName");
 
-                    b.HasKey("UserName");
+                    b.HasKey("UserId");
 
-                    b.HasAlternateKey("UserId");
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserName");
 
                     b.ToTable("Users");
                 });
@@ -218,15 +297,11 @@ namespace Scheduler.Data.Migrations
                     b.Property<string>("UserDetailId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("ChangeDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 703, DateTimeKind.Utc).AddTicks(3950));
+                    b.Property<DateTime>("ChangeDate");
 
                     b.Property<string>("Characteristic");
 
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 703, DateTimeKind.Utc).AddTicks(4270));
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("CreateUserId");
 
@@ -234,9 +309,7 @@ namespace Scheduler.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<DateTime>("LastUpdateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 3, 11, 0, 49, 39, 703, DateTimeKind.Utc).AddTicks(4490));
+                    b.Property<DateTime>("LastUpdateDate");
 
                     b.Property<string>("LastUpdateUserId");
 
@@ -246,9 +319,81 @@ namespace Scheduler.Data.Migrations
 
                     b.HasKey("UserDetailId");
 
+                    b.HasIndex("UserDetailId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("UserDetails");
+                });
+
+            modelBuilder.Entity("Scheduler.Domain.Warranty", b =>
+                {
+                    b.Property<string>("WarrantyId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ChangeDate");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<DateTime?>("DeleteDate");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<string>("TeamId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("WarrantyName");
+
+                    b.Property<string>("WarrentyDescription");
+
+                    b.HasKey("WarrantyId");
+
+                    b.HasIndex("WarrantyId");
+
+                    b.HasIndex("TeamId", "StartDate", "EndDate");
+
+                    b.HasIndex("UserId", "StartDate", "EndDate");
+
+                    b.ToTable("Warranties");
+                });
+
+            modelBuilder.Entity("Scheduler.Domain.WarrantyNote", b =>
+                {
+                    b.Property<string>("WarrantyNoteId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ChangeDate");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<DateTime?>("DeleteDate");
+
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("Note");
+
+                    b.Property<string>("WarrantyId");
+
+                    b.HasKey("WarrantyNoteId");
+
+                    b.HasIndex("WarrantyId");
+
+                    b.HasIndex("WarrantyNoteId");
+
+                    b.ToTable("WarrantyNotes");
                 });
 
             modelBuilder.Entity("Scheduler.Domain.Schedule", b =>
@@ -271,22 +416,31 @@ namespace Scheduler.Data.Migrations
 
             modelBuilder.Entity("Scheduler.Domain.Team", b =>
                 {
-                    b.HasOne("Scheduler.Domain.TeamCategory", "TeamCategory")
+                    b.HasOne("Scheduler.Domain.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("TeamCategoryId");
+                        .HasForeignKey("LocationId");
+                });
+
+            modelBuilder.Entity("Scheduler.Domain.TeamCategory", b =>
+                {
+                    b.HasOne("Scheduler.Domain.Category", "Category")
+                        .WithMany("TeamCategories")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Scheduler.Domain.Team", "Team")
+                        .WithMany("TeamCategories")
+                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("Scheduler.Domain.TeamUser", b =>
                 {
                     b.HasOne("Scheduler.Domain.Team", "Team")
                         .WithMany("TeamUsers")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TeamId");
 
                     b.HasOne("Scheduler.Domain.User", "User")
                         .WithMany("TeamUsers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Scheduler.Domain.UserDetail", b =>
@@ -294,6 +448,24 @@ namespace Scheduler.Data.Migrations
                     b.HasOne("Scheduler.Domain.User")
                         .WithMany("UserDetails")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Scheduler.Domain.Warranty", b =>
+                {
+                    b.HasOne("Scheduler.Domain.Team")
+                        .WithMany("Warranties")
+                        .HasForeignKey("TeamId");
+
+                    b.HasOne("Scheduler.Domain.User")
+                        .WithMany("Warranties")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Scheduler.Domain.WarrantyNote", b =>
+                {
+                    b.HasOne("Scheduler.Domain.Warranty")
+                        .WithMany("WarrantyNotes")
+                        .HasForeignKey("WarrantyId");
                 });
 #pragma warning restore 612, 618
         }
