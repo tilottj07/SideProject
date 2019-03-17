@@ -9,7 +9,7 @@ using Scheduler.Data;
 namespace Scheduler.Data.Migrations
 {
     [DbContext(typeof(ScheduleContext))]
-    [Migration("20190315020739_CreateDB")]
+    [Migration("20190316002702_CreateDB")]
     partial class CreateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -224,14 +224,20 @@ namespace Scheduler.Data.Migrations
 
             modelBuilder.Entity("Scheduler.Domain.TeamUser", b =>
                 {
-                    b.Property<string>("TeamUserId")
+                    b.Property<Guid>("TeamUserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ChangeDate");
 
                     b.Property<DateTime>("CreateDate");
 
+                    b.Property<string>("CreateUserId");
+
                     b.Property<DateTime?>("DeleteDate");
+
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
 
                     b.Property<string>("TeamId");
 

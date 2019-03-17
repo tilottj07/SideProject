@@ -40,6 +40,22 @@ namespace Scheduler.BL.User.Implementation
             return user;
         }
 
+        public List<IUser> GetUsers(List<Guid> userIds)
+        {
+            List<IUser> users = new List<IUser>();
+
+            List<string> ids = new List<string>();
+            foreach (Guid id in userIds.Distinct()) ids.Add(id.ToString());
+
+            using(var context = new Data.ScheduleContext())
+            {
+                var items = context.Users.Where(x => ids.Contains(x.UserId) && !x.DeleteDate.HasValue);
+                foreach (var item in items) users.Add(Mapper.Map<UserDto>(item));
+            }
+
+            return users;
+        }
+
         public IUser GetUser(string userName)
         {
             IUser user = null;

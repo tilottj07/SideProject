@@ -28,5 +28,7 @@ namespace Scheduler.BL.User.Interface.Models
         DateTime ChangeDate { get; }
         DateTime? DeleteDate { get; }
 
+        string DisplayName { get; }
+
     }
 }

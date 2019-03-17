@@ -25,6 +25,10 @@
     <Folder Include="Team\Implementation\" />
     <Folder Include="Team\Interface\" />
     <Folder Include="Team\Interface\Models\" />
+    <Folder Include="Schedule\Dto\" />
+    <Folder Include="Schedule\Implementation\" />
+    <Folder Include="Schedule\Interface\" />
+    <Folder Include="Schedule\Interface\Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Scheduler.Domain\Scheduler.Domain.csproj" />

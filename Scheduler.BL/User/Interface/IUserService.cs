@@ -11,6 +11,7 @@ namespace Scheduler.BL.User.Interface
         IUser GetUser(Guid userId);
         IUser GetUser(string userName);
         List<IUser> GetUsers();
+        List<IUser> GetUsers(List<Guid> userIds);
         List<IUser> GetTeamUsers(Guid teamId);
 
         ChangeResult AddUser(IUser user);

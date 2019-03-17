@@ -202,10 +202,13 @@ namespace Scheduler.Data.Migrations
                 name: "TeamUsers",
                 columns: table => new
                 {
-                    TeamUserId = table.Column<string>(nullable: false),
+                    TeamUserId = table.Column<Guid>(nullable: false),
                     TeamId = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdateDate = table.Column<DateTime>(nullable: false),
+                    LastUpdateUserId = table.Column<string>(nullable: true),
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     DeleteDate = table.Column<DateTime>(nullable: true)
                 },

@@ -33,6 +33,22 @@ namespace Scheduler.BL.Team.Implementation
             return team;
         }
 
+        public List<ITeam> GetTeams(List<Guid> teamIds)
+        {
+            List<ITeam> teams = new List<ITeam>();
+
+            List<string> ids = new List<string>();
+            foreach (Guid id in teamIds.Distinct()) ids.Add(id.ToString());
+
+            using(var context = new Data.ScheduleContext())
+            {
+                var items = context.Teams.Where(x => ids.Contains(x.TeamId) && !x.DeleteDate.HasValue);
+                foreach (var item in items) teams.Add(Mapper.Map<TeamDto>(item));
+            }
+
+            return teams;
+        }
+
         public List<ITeam> GetLocationTeams(Guid locationId)
         {
             List<ITeam> teams = new List<ITeam>();

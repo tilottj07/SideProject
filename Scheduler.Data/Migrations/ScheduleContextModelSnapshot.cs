@@ -222,14 +222,20 @@ namespace Scheduler.Data.Migrations
 
             modelBuilder.Entity("Scheduler.Domain.TeamUser", b =>
                 {
-                    b.Property<string>("TeamUserId")
+                    b.Property<Guid>("TeamUserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ChangeDate");
 
                     b.Property<DateTime>("CreateDate");
 
+                    b.Property<string>("CreateUserId");
+
                     b.Property<DateTime?>("DeleteDate");
+
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
 
                     b.Property<string>("TeamId");
 

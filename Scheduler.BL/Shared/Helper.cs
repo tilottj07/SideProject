@@ -27,5 +27,11 @@ namespace Scheduler.BL.Shared
                 return false;
             }
         }
+
+
+        public static DateTime GetDefaultEndDate()
+        {
+            return Convert.ToDateTime("1/1/2070");
+        }
     }
 }

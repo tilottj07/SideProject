@@ -28,5 +28,40 @@ namespace Scheduler.BL.User.Dto
         public DateTime ChangeDate { get; set; }
         public DateTime? DeleteDate { get; set; }
 
+
+        public string DisplayName
+        {
+            get
+            {
+                string val = string.Empty;
+                if (!string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(MiddleInitial) && !string.IsNullOrWhiteSpace(LastName))
+                {
+                    val = $"{FirstName} {MiddleInitial}. {LastName}";
+                }
+                else if (!string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(LastName))
+                {
+                    val = $"{FirstName} {LastName}";
+                }
+                else if (!string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(MiddleInitial))
+                {
+                    val = $"{FirstName} {MiddleInitial}.";
+                }
+                else if (!string.IsNullOrWhiteSpace(FirstName))
+                {
+                    val = FirstName;
+                }
+                else if (!string.IsNullOrWhiteSpace(LastName))
+                {
+                    val = LastName;
+                }
+                else
+                {
+                    val = UserName;
+                }
+
+                return val.Trim();
+            }
+        }
+
     }
 }
