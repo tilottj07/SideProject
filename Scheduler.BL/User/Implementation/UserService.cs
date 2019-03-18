@@ -202,6 +202,7 @@ namespace Scheduler.BL.User.Implementation
                     }
                 }
 
+
                 if (string.IsNullOrWhiteSpace(user.UserName))
                 {
                     result.IsSuccess = false;
