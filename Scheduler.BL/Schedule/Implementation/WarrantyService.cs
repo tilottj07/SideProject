@@ -135,8 +135,6 @@ namespace Scheduler.BL.Schedule.Implementation
                             WarrentyDescription = Helper.CleanString(item.WarrentyDescription),
                             StartDate = item.StartDate,
                             EndDate = item.EndDate,
-                            CreateDate = DateTime.UtcNow,
-                            CreateUserId = item.CreateUserId.ToString(),
                             LastUpdateDate = DateTime.UtcNow,
                             LastUpdateUserId = item.LastUpdateUserId.ToString(),
                             DeleteDate = item.DeleteDate

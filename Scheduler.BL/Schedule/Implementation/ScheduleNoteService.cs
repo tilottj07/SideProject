@@ -42,13 +42,10 @@ namespace Scheduler.BL.Schedule.Implementation
             }
 
             if (startDate.HasValue)
-            {
                 scheduleNotes = scheduleNotes.Where(x => x.StartDate >= startDate.Value || x.EndDate >= startDate.Value).ToList();
-            }
+
             if (endDate.HasValue)
-            {
                 scheduleNotes = scheduleNotes.Where(x => x.StartDate <= endDate.Value || x.EndDate <= endDate.Value).ToList();
-            }
 
             return scheduleNotes;
         }
