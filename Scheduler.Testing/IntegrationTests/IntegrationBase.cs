@@ -18,6 +18,7 @@ namespace Scheduler.Testing.IntegrationTests
         ILocationService Location;
         ICategoryService Category;
         IScheduleService Schedule;
+        IWarrantyService Warranty;
 
         public IntegrationBase()
         {
@@ -26,6 +27,7 @@ namespace Scheduler.Testing.IntegrationTests
             Location = new LocationService();
             Category = new CategoryService();
             Schedule = new ScheduleService();
+            Warranty = new WarrantyService();
         }
 
         public UserDto SeedUser()
@@ -141,6 +143,36 @@ namespace Scheduler.Testing.IntegrationTests
 
             DeleteSeededTeam(item.TeamId);
             DeleteSeededUser(item.UserId);
+        }
+
+
+        public WarrantyDto SeedWarranty()
+        {
+            var teamDto = SeedTeam();
+            var userDto = SeedUser();
+
+            WarrantyDto dto = new WarrantyDto()
+            {
+                WarrantyId = Guid.NewGuid(),
+                WarrantyName = "Test Warranty",
+                TeamId = teamDto.TeamId,
+                UserId = userDto.UserId,
+                WarrentyDescription = "Test Warranty Desc",
+                StartDate = Convert.ToDateTime("1/1/2000"),
+                EndDate = Convert.ToDateTime("2/7/2000")
+            };
+
+            Warranty.AddWarranty(dto);
+            return dto;
+        }
+
+        public void DeleteSeededWarranty(Guid warrantyId)
+        {
+            var item = Warranty.GetWarranty(warrantyId);
+            Warranty.DeleteWarranty(item.WarrantyId);
+
+            Team.DeleteTeam(item.TeamId);
+            User.DeleteUser(item.UserId);
         }
 
     }
