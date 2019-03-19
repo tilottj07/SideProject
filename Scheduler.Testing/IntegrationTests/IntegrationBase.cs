@@ -1,4 +1,7 @@
 ﻿using System;
+using Scheduler.BL.Schedule.Dto;
+using Scheduler.BL.Schedule.Implementation;
+using Scheduler.BL.Schedule.Interface;
 using Scheduler.BL.Team.Dto;
 using Scheduler.BL.Team.Implementation;
 using Scheduler.BL.Team.Interface;
@@ -14,6 +17,7 @@ namespace Scheduler.Testing.IntegrationTests
         ITeamService Team;
         ILocationService Location;
         ICategoryService Category;
+        IScheduleService Schedule;
 
         public IntegrationBase()
         {
@@ -21,6 +25,7 @@ namespace Scheduler.Testing.IntegrationTests
             Team = new TeamService();
             Location = new LocationService();
             Category = new CategoryService();
+            Schedule = new ScheduleService();
         }
 
         public UserDto SeedUser()
@@ -108,5 +113,35 @@ namespace Scheduler.Testing.IntegrationTests
         {
             Category.DeleteCategory(categoryId);
         }
+
+
+
+        public ScheduleDto SeedSchedule()
+        {
+            var teamDto = SeedTeam();
+            var userDto = SeedUser();
+
+            ScheduleDto dto = new ScheduleDto()
+            {
+                ScheduleId = Guid.NewGuid(),
+                TeamId = teamDto.TeamId,
+                UserId = userDto.UserId,
+                StartDate = Convert.ToDateTime("5/1/2000"),
+                EndDate = Convert.ToDateTime("5/5/2000")
+            };
+
+            Schedule.SaveSchedule(dto);
+            return dto;
+        }
+
+        public void DeleteSeededSchedule(Guid scheduleId)
+        {
+            var item = Schedule.GetSchedule(scheduleId);
+            Schedule.DeleteSchedule(scheduleId);
+
+            DeleteSeededTeam(item.TeamId);
+            DeleteSeededUser(item.UserId);
+        }
+
     }
 }
