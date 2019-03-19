@@ -1,12 +1,13 @@
 ﻿using System;
 namespace Scheduler.BL.Schedule.Interface.Models
 {
-    public interface IScheduleNote
+    public interface IWarranty
     {
-
-        Guid ScheduleNoteId { get; }
-        Guid ScheduleId { get; }
-        string Note { get; }
+        Guid WarrantyId { get; }
+        string WarrantyName { get; }
+        string WarrentyDescription { get; }
+        Guid TeamId { get; }
+        Guid UserId { get; }
 
         DateTime StartDate { get; }
         DateTime EndDate { get; }

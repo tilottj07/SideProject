@@ -8,7 +8,7 @@ namespace Scheduler.BL.Schedule.Interface
     public interface IScheduleNoteService
     {
         IScheduleNote GetScheduleNote(Guid scheduleNoteId);
-        List<IScheduleNote> GetScheduleNotes(Guid scheduleId);
+        List<IScheduleNote> GetScheduleNotes(Guid scheduleId, DateTime? startDate = null, DateTime? endDate = null);
         List<IScheduleNote> GetScheduleNotesByTeam(Guid teamId, DateTime startDate, DateTime endDate);
 
         ChangeResult AddScheduleNote(IScheduleNote scheduleNote);

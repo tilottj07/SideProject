@@ -202,7 +202,7 @@ namespace Scheduler.Data.Migrations
                 name: "TeamUsers",
                 columns: table => new
                 {
-                    TeamUserId = table.Column<Guid>(nullable: false),
+                    TeamUserId = table.Column<string>(nullable: false),
                     TeamId = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
@@ -271,9 +271,11 @@ namespace Scheduler.Data.Migrations
                     ScheduleNoteId = table.Column<string>(nullable: false),
                     ScheduleId = table.Column<string>(nullable: true),
                     Note = table.Column<string>(nullable: true),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     CreateUserId = table.Column<string>(nullable: true),
-                    LastUpdated = table.Column<DateTime>(nullable: false),
+                    LastUpdateDate = table.Column<DateTime>(nullable: false),
                     LastUpdateUserId = table.Column<string>(nullable: true),
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     DeleteDate = table.Column<DateTime>(nullable: true)
@@ -296,6 +298,8 @@ namespace Scheduler.Data.Migrations
                     WarrantyNoteId = table.Column<string>(nullable: false),
                     WarrantyId = table.Column<string>(nullable: true),
                     Note = table.Column<string>(nullable: true),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     CreateUserId = table.Column<string>(nullable: true),
                     LastUpdateDate = table.Column<DateTime>(nullable: false),

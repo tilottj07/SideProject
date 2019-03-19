@@ -9,14 +9,14 @@ using Scheduler.Data;
 namespace Scheduler.Data.Migrations
 {
     [DbContext(typeof(ScheduleContext))]
-    [Migration("20190316002702_CreateDB")]
+    [Migration("20190319015319_CreateDB")]
     partial class CreateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034");
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
 
             modelBuilder.Entity("Scheduler.Domain.Category", b =>
                 {
@@ -137,13 +137,17 @@ namespace Scheduler.Data.Migrations
 
                     b.Property<DateTime?>("DeleteDate");
 
-                    b.Property<string>("LastUpdateUserId");
+                    b.Property<DateTime>("EndDate");
 
-                    b.Property<DateTime>("LastUpdated");
+                    b.Property<DateTime>("LastUpdateDate");
+
+                    b.Property<string>("LastUpdateUserId");
 
                     b.Property<string>("Note");
 
                     b.Property<string>("ScheduleId");
+
+                    b.Property<DateTime>("StartDate");
 
                     b.HasKey("ScheduleNoteId");
 
@@ -224,7 +228,7 @@ namespace Scheduler.Data.Migrations
 
             modelBuilder.Entity("Scheduler.Domain.TeamUser", b =>
                 {
-                    b.Property<Guid>("TeamUserId")
+                    b.Property<string>("TeamUserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ChangeDate");
@@ -387,11 +391,15 @@ namespace Scheduler.Data.Migrations
 
                     b.Property<DateTime?>("DeleteDate");
 
+                    b.Property<DateTime>("EndDate");
+
                     b.Property<DateTime>("LastUpdateDate");
 
                     b.Property<string>("LastUpdateUserId");
 
                     b.Property<string>("Note");
+
+                    b.Property<DateTime>("StartDate");
 
                     b.Property<string>("WarrantyId");
 

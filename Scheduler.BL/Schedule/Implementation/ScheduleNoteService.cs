@@ -32,7 +32,7 @@ namespace Scheduler.BL.Schedule.Implementation
             return scheduleNote;
         }
 
-        public List<IScheduleNote> GetScheduleNotes(Guid scheduleId)
+        public List<IScheduleNote> GetScheduleNotes(Guid scheduleId, DateTime? startDate = null, DateTime? endDate = null)
         {
             List<IScheduleNote> scheduleNotes = new List<IScheduleNote>();
             using (var context = new Data.ScheduleContext())
@@ -40,6 +40,16 @@ namespace Scheduler.BL.Schedule.Implementation
                 var items = context.ScheduleNotes.Where(x => x.ScheduleId == scheduleId.ToString() && !x.DeleteDate.HasValue);
                 foreach (var item in items) scheduleNotes.Add(Mapper.Map<ScheduleNoteDto>(item));
             }
+
+            if (startDate.HasValue)
+            {
+                scheduleNotes = scheduleNotes.Where(x => x.StartDate >= startDate.Value || x.EndDate >= startDate.Value).ToList();
+            }
+            if (endDate.HasValue)
+            {
+                scheduleNotes = scheduleNotes.Where(x => x.StartDate <= endDate.Value || x.EndDate <= endDate.Value).ToList();
+            }
+
             return scheduleNotes;
         }
 
@@ -57,6 +67,10 @@ namespace Scheduler.BL.Schedule.Implementation
 
                 foreach (var item in items) scheduleNotes.Add(Mapper.Map<ScheduleNoteDto>(item));
             }
+
+            scheduleNotes = scheduleNotes.Where(x => (x.StartDate >= startDate || x.EndDate >= startDate) 
+                && (x.StartDate <= endDate || x.EndDate <= endDate)).ToList();
+
             return scheduleNotes;
         }
 
@@ -79,9 +93,11 @@ namespace Scheduler.BL.Schedule.Implementation
                             ScheduleNoteId = item.ScheduleNoteId == Guid.Empty ? Guid.NewGuid().ToString() : item.ScheduleNoteId.ToString(),
                             ScheduleId = item.ScheduleId.ToString(),
                             Note = Helper.CleanString(item.Note),
+                            StartDate = item.StartDate,
+                            EndDate = item.EndDate,
                             CreateDate = DateTime.UtcNow,
                             CreateUserId = item.CreateUserId.ToString(),
-                            LastUpdated = DateTime.UtcNow,
+                            LastUpdateDate = DateTime.UtcNow,
                             LastUpdateUserId = item.LastUpdateUserId.ToString(),
                             DeleteDate = item.DeleteDate
                         });
@@ -111,7 +127,9 @@ namespace Scheduler.BL.Schedule.Implementation
                             ScheduleNoteId = item.ScheduleNoteId.ToString(),
                             ScheduleId = item.ScheduleId.ToString(),
                             Note = Helper.CleanString(item.Note),
-                            LastUpdated = DateTime.UtcNow,
+                            StartDate = item.StartDate,
+                            EndDate = item.EndDate,
+                            LastUpdateDate = DateTime.UtcNow,
                             LastUpdateUserId = item.LastUpdateUserId.ToString(),
                             DeleteDate = item.DeleteDate
                         });
@@ -152,6 +170,12 @@ namespace Scheduler.BL.Schedule.Implementation
                 {
                     result.IsSuccess = false;
                     result.ErrorMessages.Add("Note cannot be longer than 1000 characters");
+                }
+
+                if (item.StartDate > item.EndDate)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMessages.Add("Start Date cannot be after End Date");
                 }
             }
             return result;

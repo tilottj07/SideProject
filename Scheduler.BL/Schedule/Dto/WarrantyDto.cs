@@ -3,11 +3,13 @@ using Scheduler.BL.Schedule.Interface.Models;
 
 namespace Scheduler.BL.Schedule.Dto
 {
-    public class ScheduleNoteDto : IScheduleNote
+    public class WarrantyDto : IWarranty
     {
-        public Guid ScheduleNoteId { get; set; }
-        public Guid ScheduleId { get; set; }
-        public string Note { get; set; }
+        public Guid WarrantyId { get; set; }
+        public string WarrantyName { get; set; }
+        public string WarrentyDescription { get; set; }
+        public Guid TeamId { get; set; }
+        public Guid UserId { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
