@@ -8,11 +8,15 @@
     <PackageReference Include="bootstrap" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="DataTables.AspNet.Core" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Scheduler.Data\Scheduler.Data.csproj" />
     <ProjectReference Include="..\Scheduler.Domain\Scheduler.Domain.csproj" />
     <ProjectReference Include="..\Scheduler.BL\Scheduler.BL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\User\" />
   </ItemGroup>
 </Project>
