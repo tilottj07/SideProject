@@ -14,13 +14,14 @@ namespace SchedulerApp.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Users");
         }
 
 
         public IActionResult Users()
         {
-            return View();
+            Models.User.Users vm = new Models.User.Users();
+            return View(vm);
         }
     }
 }
