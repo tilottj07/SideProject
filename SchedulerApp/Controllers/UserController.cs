@@ -30,7 +30,7 @@ namespace SchedulerApp.Controllers
 
         public IActionResult Users()
         {
-            Models.User.Users vm = new Models.User.Users();
+            Users vm = new Users();
             return View(vm);
         }
 
