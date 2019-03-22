@@ -1,24 +1,24 @@
 ﻿
 $(document).ready(function () {
 
-    $('#example').DataTable();
 
-    //$('#example').DataTable({
-    //    "processing": true,
-    //    "serverSide": true,
-    //    "ajax": {
-    //        "url": "scripts/post.php",
-    //        "type": "POST"
-    //    },
-    //    "columns": [
-    //        { "data": "first_name" },
-    //        { "data": "last_name" },
-    //        { "data": "position" },
-    //        { "data": "office" },
-    //        { "data": "start_date" },
-    //        { "data": "salary" }
-    //    ]
-    //});
+    $('#usersTable').DataTable({
+        "processing": false,
+        "serverSide": false,
+        "ajax": getUrlPrefix() + "User/_getUserGridData",
+        "columns": [
+            { "data": "userName" },
+            { "data": "displayName" },
+            { "data": "firstName" },
+            { "data": "middleInitial" },
+            { "data": "lastName" }
+        ]
+    });
+
+
+ 
+
+
 
 });
 

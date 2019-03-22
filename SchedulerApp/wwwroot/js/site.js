@@ -4,3 +4,9 @@
 // Write your JavaScript code.
 
 
+
+function getUrlPrefix() {
+    return window.location.protocol + "//" + window.location.host + "/";
+}
+
+
