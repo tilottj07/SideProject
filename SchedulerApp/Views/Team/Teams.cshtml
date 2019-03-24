@@ -1,0 +1,33 @@
+﻿@model SchedulerApp.Models.Team.Teams
+
+<link rel="stylesheet" href="~/css/Team/Teams.css" />
+<script src="~/js/Team/Teams.js"></script>
+
+@{
+    Layout = "_Layout";
+}
+
+<div id="modal-placeholder"></div>
+
+<h2>Teams</h2>
+
+<div class="float-sm-right" style="float: right; padding-bottom: 10px;">
+    <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#add-team" data-url="@Url.Action("EditTeamModal")">
+        Add User
+    </button>
+</div>
+
+<table id="teamsTable" class="table table-striped table-bordered table-condensed" style="width:100%">
+    <thead>
+        <tr>
+            <th>Team Name</th>
+            <th>Team Description</th>
+            <th>Team Location</th>
+            <th>Team Email</th>
+            <th>Team Leader</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+

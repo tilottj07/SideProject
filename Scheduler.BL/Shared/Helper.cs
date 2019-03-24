@@ -45,16 +45,25 @@ namespace Scheduler.BL.Shared
 
         public static string FormatPhoneNumber(string val)
         {
-            string number = string.Empty;
+            try
+            {
+                val = CleanString(val);
+                string number = string.Empty;
 
-            number = new string(val.Where(c => char.IsDigit(c)).ToArray());
+                number = new string(val.Where(c => char.IsDigit(c)).ToArray());
 
-            if (number.Length == 10)
-                number = $"{number.Substring(0, 3)}-{number.Substring(3, 3)}-{number.Substring(6, 4)}";
-            else if (number.Length == 11)
-                number = $"{number.Substring(0, 1)}-{number.Substring(1, 3)}-{number.Substring(4, 3)}-{number.Substring(7, 4)}";
+                if (number.Length == 10)
+                    number = $"{number.Substring(0, 3)}-{number.Substring(3, 3)}-{number.Substring(6, 4)}";
+                else if (number.Length == 11)
+                    number = $"{number.Substring(0, 1)}-{number.Substring(1, 3)}-{number.Substring(4, 3)}-{number.Substring(7, 4)}";
 
-            return number;
+                return number;
+            }
+            catch(Exception ex)
+            {
+                string s = ex.ToString();
+                return CleanString(val);
+            }
         }
 
     }

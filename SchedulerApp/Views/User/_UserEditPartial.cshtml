@@ -9,21 +9,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @if (Model.Result != null && !Model.Result.IsSuccess)
-            {
-                <div>
-                    @foreach(string msg in Model.Result.ErrorMessages)
-                    {
-                        <div>@msg</div>
-                    }
-                </div>
-            }
+
              <div class="modal-body">
                 <form asp-action="EditUserModal">
-
+                
                     @Html.HiddenFor(x => x.UserId)
                     @Html.HiddenFor(x => x.IsAddNew)
-                    @Html.Hidden("IsValid", ViewData.ModelState.IsValid.ToString())
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
 
                     <div class="form-group">
                         <label asp-for="UserName"></label>
@@ -64,6 +56,10 @@
                 </form>
             </div>
             <div class="modal-footer">
+                @if (Model.IsAddNew == false)
+                {
+                    <button type="button" class="btn btn-secondary" data-save="delete">Delete</button>
+                }
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" data-save="modal">Save</button>
             </div>

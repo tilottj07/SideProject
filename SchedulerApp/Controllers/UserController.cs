@@ -6,6 +6,7 @@ using Scheduler.BL.User.Implementation;
 using SchedulerApp.Models.User;
 using Scheduler.BL.User.Dto;
 using Scheduler.BL.Shared;
+using Scheduler.BL.Shared.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -81,6 +82,39 @@ namespace SchedulerApp.Controllers
                     model.Result = UserService.UpdateUser(dto);
             }
             return PartialView("_UserEditPartial", model);
+        }
+
+
+        [HttpPost]
+        public IActionResult _deleteUser(string id)
+        {
+            ChangeResult result = new ChangeResult();
+
+            Guid? userId = Helper.ConvertToGuid(id);
+            if (userId.HasValue)
+            {
+                var user = UserService.GetUser(userId.Value);
+                if (user != null)
+                {
+                    UserDto dto = new UserDto()
+                    {
+                        BackupEmail = user.BackupEmail,
+                        BackupPhoneNumber = user.BackupPhoneNumber,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        MiddleInitial = user.MiddleInitial,
+                        PrimaryEmail = user.PrimaryEmail,
+                        PrimaryPhoneNumber = user.PrimaryPhoneNumber,
+                        UserId = user.UserId,
+                        UserName = user.UserName,
+                        DeleteDate = DateTime.UtcNow
+                    };
+
+                    result = UserService.UpdateUser(dto);
+                }
+            }
+
+            return new JsonResult(result);
         }
 
     }
