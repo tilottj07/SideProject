@@ -33,5 +33,14 @@ namespace Scheduler.BL.Shared
         {
             return Convert.ToDateTime("1/1/2070");
         }
+
+        public static Guid? ConvertToGuid(string val)
+        {
+            Guid id;
+            if (Guid.TryParse(val, out id)) return id;
+
+            return null;
+        }
+
     }
 }

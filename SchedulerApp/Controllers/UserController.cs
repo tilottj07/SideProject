@@ -10,6 +10,8 @@ using SchedulerApp.Models.User;
 using Scheduler.BL.User.Dto;
 using Scheduler.BL.User.Interface.Models;
 using Newtonsoft.Json;
+using Scheduler.BL.Shared;
+using Scheduler.BL.Shared.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -47,11 +49,44 @@ namespace SchedulerApp.Controllers
             return Json(new { data = rows });
         }
 
-        [HttpPost]
-        public IActionResult _removeUser(string id)
+
+        public IActionResult EditUserModal(string id)
         {
-            var result = UserService.DeleteUser(new Guid(id));
-            return new JsonResult(result);
+            Models.User.UserEdit vm = new UserEdit();
+
+            Guid? userId = Helper.ConvertToGuid(id);
+            if (userId.HasValue)
+            {
+                vm = new UserEdit(UserService.GetUser(userId.Value));
+            }
+           
+            return PartialView("_UserEditPartial", vm);
+        }
+
+        [HttpPost]
+        public IActionResult EditUserModal(Models.User.UserEdit model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserDto dto = new UserDto()
+                {
+                    BackupEmail = model.BackupEmail,
+                    BackupPhoneNumber = model.BackupPhoneNumber,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    MiddleInitial = model.MiddleInitial,
+                    PrimaryEmail = model.PrimaryEmail,
+                    PrimaryPhoneNumber = model.PrimaryPhoneNumber,
+                    UserId = model.UserId,
+                    UserName = model.UserName
+                };
+
+                if (model.IsAddNew)
+                    model.Result = UserService.AddUser(dto);
+                else
+                    model.Result = UserService.UpdateUser(dto);
+            }
+            return PartialView("_UserEditPartial", model);
         }
 
     }

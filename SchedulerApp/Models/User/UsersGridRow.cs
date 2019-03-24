@@ -13,18 +13,18 @@ namespace SchedulerApp.Models.User
             UserId = user.UserId;
             UserName = user.UserName;
             DisplayName = user.DisplayName;
-            FirstName = user.FirstName;
-            MiddleInitial = user.MiddleInitial;
-            LastName = user.LastName;
+            PrimaryPhone = user.PrimaryPhoneNumber;
+            Email = user.PrimaryEmail;
+            BackupPhone = user.BackupPhoneNumber;
         }
 
 
         public Guid UserId { get; set; }
         public string UserName { get; set; }
         public string DisplayName { get; set; }
-        public string FirstName { get; set; }
-        public string MiddleInitial { get; set; }
-        public string LastName { get; set; }
+        public string PrimaryPhone { get; set; }
+        public string Email { get; set; }
+        public string BackupPhone { get; set; }
 
 
 
