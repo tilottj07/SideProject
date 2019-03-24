@@ -49,8 +49,11 @@ namespace SchedulerApp.Models.User
   
         [Required]
         [Display(Name = "Primary Phone #")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string PrimaryPhoneNumber { get; set; }
+
         [Display(Name = "Backup Phone #")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string BackupPhoneNumber { get; set; }
 
         [Required]

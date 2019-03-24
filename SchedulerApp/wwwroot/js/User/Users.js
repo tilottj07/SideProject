@@ -42,7 +42,7 @@ $(document).ready(function () {
 
 
 function setupGrid() {
-    $('#usersTable').DataTable({
+    var table = $('#usersTable').DataTable({
         "processing": false,
         "serverSide": false,
         "ajax": getUrlPrefix() + "User/_getUserGridData",
@@ -51,13 +51,51 @@ function setupGrid() {
             { "data": "displayName" },
             { "data": "primaryPhone" },
             { "data": "email" },
-            { "data": "backupPhone" }
+            { "data": "backupPhone" },
+            { "defaultContent": "<button>Edit</button>" }
         ]
+    });
+
+    $('#usersTable tbody').on( 'click', 'button', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        editUser(data.userId);
     });
 }
 
 function reloadGridData() {
     $('#usersTable').DataTable().ajax.reload();
+}
+
+function editUser(userId) {
+
+    var placeholderElement = $('#modal-placeholder');
+
+    var url = getUrlPrefix() + 'User/EditUserModal/' + userId;
+    $.get(url).done(function (data) {
+        placeholderElement.html(data);
+        placeholderElement.find('.modal').modal('show');
+    });
+
+    placeholderElement.on('click', '[data-save="modal"]', function (event) {
+        event.preventDefault();
+
+        var form = $(this).parents('.modal').find('form');
+        var actionUrl = form.attr('action');
+        var dataToSend = form.serialize();
+
+        $.post(actionUrl, dataToSend).done(function (data) {
+
+            var newBody = $('.modal-body', data);
+            placeholderElement.find('.modal-body').replaceWith(newBody);
+
+            var isValid = newBody.find('[name="IsValid"]').val() == 'True';
+            if (isValid) {
+                placeholderElement.find('.modal').modal('hide');
+                reloadGridData();
+            }
+            
+        });
+    }); 
 }
 
 

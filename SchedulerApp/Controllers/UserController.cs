@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using DataTables;
 using Scheduler.BL.User.Interface;
 using Scheduler.BL.User.Implementation;
 using SchedulerApp.Models.User;
 using Scheduler.BL.User.Dto;
-using Scheduler.BL.User.Interface.Models;
-using Newtonsoft.Json;
 using Scheduler.BL.Shared;
-using Scheduler.BL.Shared.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,7 +46,7 @@ namespace SchedulerApp.Controllers
 
         public IActionResult EditUserModal(string id)
         {
-            Models.User.UserEdit vm = new UserEdit();
+            UserEdit vm = new UserEdit();
 
             Guid? userId = Helper.ConvertToGuid(id);
             if (userId.HasValue)
@@ -64,7 +58,7 @@ namespace SchedulerApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditUserModal(Models.User.UserEdit model)
+        public IActionResult EditUserModal(UserEdit model)
         {
             if (ModelState.IsValid)
             {

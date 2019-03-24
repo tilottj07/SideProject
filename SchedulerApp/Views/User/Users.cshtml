@@ -1,7 +1,7 @@
 ﻿@model SchedulerApp.Models.User.Users
 
-<script src="~/js/User/Users.js"></script>
 <link rel="stylesheet" href="~/css/User/Users.css" />
+<script src="~/js/User/Users.js"></script>
 
 @{
     Layout = "_Layout";
@@ -11,24 +11,23 @@
 
 <h2>Users</h2>
 
-
+<div class="float-sm-right" style="float: right; padding-bottom: 10px;">
+    <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#add-user" data-url="@Url.Action("EditUserModal")">
+        Add User
+    </button>
+</div>
 
 <table id="usersTable" class="table table-striped table-bordered" style="width:100%">
     <thead>
         <tr>
             <th>User Name</th>
-            <th>Display Name</th>
+            <th>Name</th>
             <th>Primary Phone</th>
             <th>Email</th>
             <th>Backup Phone</th>
+            <th></th>
         </tr>
     </thead>
 </table>
 
-
-<div class="float-sm-right">
-    <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#add-user" data-url="@Url.Action("EditUserModal")">
-        Add User
-    </button>
-</div>
 

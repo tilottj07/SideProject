@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+
 namespace Scheduler.BL.Shared
 {
     public static class Helper
@@ -36,10 +38,23 @@ namespace Scheduler.BL.Shared
 
         public static Guid? ConvertToGuid(string val)
         {
-            Guid id;
-            if (Guid.TryParse(val, out id)) return id;
+            if (Guid.TryParse(val, out Guid id)) return id;
 
             return null;
+        }
+
+        public static string FormatPhoneNumber(string val)
+        {
+            string number = string.Empty;
+
+            number = new string(val.Where(c => char.IsDigit(c)).ToArray());
+
+            if (number.Length == 10)
+                number = $"{number.Substring(0, 3)}-{number.Substring(3, 3)}-{number.Substring(6, 4)}";
+            else if (number.Length == 11)
+                number = $"{number.Substring(0, 1)}-{number.Substring(1, 3)}-{number.Substring(4, 3)}-{number.Substring(7, 4)}";
+
+            return number;
         }
 
     }
