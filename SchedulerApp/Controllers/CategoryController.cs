@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Scheduler.BL.Shared;
+using Scheduler.BL.Team.Dto;
 using Scheduler.BL.Team.Implementation;
 using Scheduler.BL.Team.Interface;
 
@@ -42,7 +44,34 @@ namespace SchedulerApp.Controllers
 
         public IActionResult EditCategoryModal(string id)
         {
-            return View();
+            Guid? categoryId = Helper.ConvertToGuid(id);
+            Models.Category.EditCategory model = new Models.Category.EditCategory();
+
+            if (categoryId.HasValue)
+                model = new Models.Category.EditCategory(CategoryService.GetCategory(categoryId.Value));
+
+            return PartialView("_CategoryEditPartial", model);
+        }
+
+        [HttpPost]
+        public IActionResult EditCategoryModal(Models.Category.EditCategory model)
+        {
+            if (ModelState.IsValid)
+            {
+                CategoryDto dto = new CategoryDto()
+                {
+                    CategoryDescription = model.CategoryDescription,
+                    CategoryEmail = model.CategoryEmail,
+                    CategoryId = model.CategoryId,
+                    CategoryName = model.CategoryName
+                };
+
+                if (model.IsAddNew)
+                    model.Result = CategoryService.AddCategory(dto);
+                else
+                    model.Result = CategoryService.UpdateCategory(dto);
+            }
+            return PartialView("_CategoryEditPartial", model);
         }
 
 

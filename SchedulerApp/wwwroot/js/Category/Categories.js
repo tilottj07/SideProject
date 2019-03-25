@@ -56,7 +56,7 @@ function setupGrid() {
         "ajax": getUrlPrefix() + "Category/_getCategoriesGridData",
         "columns": [
             { "data": "categoryName" },
-            { "data": "description" },
+            { "data": "categoryDescription" },
             { "data": "categoryEmail" },
             { "defaultContent": "<button>Edit</button>" }
         ]
