@@ -101,7 +101,8 @@ namespace SchedulerApp.Controllers
                         LocationId = model.LocationId,
                         LocationName = model.LocationName,
                         StateRegion = model.StateRegion,
-                        ZipCode = model.ZipCode
+                        ZipCode = model.ZipCode,
+                        DeleteDate = DateTime.UtcNow
                     };
 
                     result = LocationService.UpdateLocation(dto);
