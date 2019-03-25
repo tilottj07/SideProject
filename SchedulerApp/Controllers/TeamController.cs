@@ -8,6 +8,8 @@ using Scheduler.BL.Shared.Models;
 using Scheduler.BL.Team.Dto;
 using Scheduler.BL.Team.Implementation;
 using Scheduler.BL.Team.Interface;
+using Scheduler.BL.User.Implementation;
+using Scheduler.BL.User.Interface;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,11 +19,13 @@ namespace SchedulerApp.Controllers
     {
         private ITeamService TeamService;
         private ILocationService LocationService;
+        private IUserService UserService;
 
         public TeamController()
         {
             TeamService = new TeamService();
             LocationService = new LocationService();
+            UserService = new UserService();
         }
 
         // GET: /<controller>/
@@ -51,14 +55,15 @@ namespace SchedulerApp.Controllers
         {
             Guid? teamId = Helper.ConvertToGuid(id);
             var locations = LocationService.GetLocations();
+            var users = UserService.GetUsers();
 
             Models.Team.TeamEdit model = new Models.Team.TeamEdit();
             if (teamId.HasValue)
             {
                 var team = TeamService.GetTeam(teamId.Value);
-                model = new Models.Team.TeamEdit(team, locations);
+                model = new Models.Team.TeamEdit(team, locations, users);
             }
-            else model = new Models.Team.TeamEdit(locations);
+            else model = new Models.Team.TeamEdit(locations, users);
 
             return PartialView("_TeamEditPartial", model);
         }
@@ -80,6 +85,11 @@ namespace SchedulerApp.Controllers
 
                 if (model.IsAddNew) model.Result = TeamService.AddTeam(dto);
                 else model.Result = TeamService.UpdateTeam(dto);
+            }
+            else
+            {
+                model.FillLocationSelectList(LocationService.GetLocations());
+                model.FillTeamLeaderSelectList(UserService.GetUsers());
             }
 
             return PartialView("_TeamEditPartial", model);

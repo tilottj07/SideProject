@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Scheduler.BL.Shared.Models;
 using Scheduler.BL.Team.Interface.Models;
+using Scheduler.BL.User.Interface.Models;
 
 namespace SchedulerApp.Models.Team
 {
@@ -15,13 +16,14 @@ namespace SchedulerApp.Models.Team
             IsAddNew = true;
         }
 
-        public TeamEdit(List<ILocation> locations)
+        public TeamEdit(List<ILocation> locations, List<IUser> users)
         {
             FillLocationSelectList(locations);
+            FillTeamLeaderSelectList(users);
             IsAddNew = true;
         }
 
-        public TeamEdit(ITeam team, List<ILocation> locations)
+        public TeamEdit(ITeam team, List<ILocation> locations, List<IUser> users)
         {
             if (team != null)
             {
@@ -36,17 +38,29 @@ namespace SchedulerApp.Models.Team
             }
 
             FillLocationSelectList(locations);
+            FillTeamLeaderSelectList(users);
         }
 
 
-        private void FillLocationSelectList(List<ILocation> locations)
+        public void FillLocationSelectList(List<ILocation> locations)
         {
             LocationsSelectList = new List<SelectListItem>();
             foreach (var location in locations.OrderBy(x => x.LocationName))
             {
                 LocationsSelectList.Add(new SelectListItem()
-                { Text = location.LocationName, Value = location.LocationId.ToString(), Selected = location.LocationId == LocationId });
+                { Text = $"{location.LocationName} - {location.Description}", Value = location.LocationId.ToString(), Selected = location.LocationId == LocationId });
             }
+        }
+
+        public void FillTeamLeaderSelectList(List<IUser> users)
+        {
+            TeamLeaderSelectList = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "None", Value = string.Empty, Selected = TeamLeaderId == null }
+            };
+
+            foreach (var user in users)
+                TeamLeaderSelectList.Add(new SelectListItem() { Text = user.DisplayName, Value = user.UserId.ToString(), Selected = user.UserId == TeamLeaderId });
         }
 
         public bool IsAddNew { get; set; }
@@ -60,6 +74,8 @@ namespace SchedulerApp.Models.Team
         [Display(Name = "Team Name")]
         [MaxLength(100)]
         public string TeamName { get; set; }
+
+        [Display(Name = "Team Leader")]
         public Guid? TeamLeaderId { get; set; }
 
         [Display(Name = "Team Email")]
@@ -71,6 +87,7 @@ namespace SchedulerApp.Models.Team
         public string TeamDescription { get; set; }
 
         public List<SelectListItem> LocationsSelectList { get; set; }
+        public List<SelectListItem> TeamLeaderSelectList { get; set; }
 
         public string ModalTitle
         {
