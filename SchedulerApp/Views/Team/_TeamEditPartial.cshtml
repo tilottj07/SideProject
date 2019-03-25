@@ -1,3 +1,54 @@
-﻿@page
-@{
-}
+﻿@model SchedulerApp.Models.Team.TeamEdit
+<!-- Modal -->
+<div class="modal fade" id="add-team" tabindex="-1" role="dialog" aria-labelledby="addTeamLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTeamLabel">@Model.ModalTitle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form asp-action="EditTeamModal">
+
+                    @Html.HiddenFor(x => x.TeamId)
+                    @Html.HiddenFor(x => x.IsAddNew)
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+
+                    <div class="form-group">
+                        <label asp-for="TeamName"></label>
+                        <input asp-for="TeamName" class="form-control" />
+                        <span asp-validation-for="TeamName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TeamDescription"></label>
+                        <input asp-for="TeamDescription" class="form-control" />
+                        <span asp-validation-for="TeamDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LocationId"></label>
+                        <select asp-for="LocationId"
+                                asp-items="Model.LocationsSelectList"></select>
+                        <span asp-validation-for="LocationId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">    
+                        <label asp-for="TeamEmail"></label>
+                        <input asp-for="TeamEmail" class="form-control" />
+                        <span asp-validation-for="TeamEmail" class="text-danger"></span>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                @if (Model.IsAddNew == false)
+                {
+                    <button type="button" class="btn btn-secondary" data-save="delete">Delete</button>
+                }
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

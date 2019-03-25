@@ -2,7 +2,6 @@
 $(document).ready(function () {
 
     setupGrid();
-    editUserModal(null);
 
     var placeholderElement = $('#modal-placeholder');
 
@@ -93,8 +92,6 @@ function editUserModal(url) {
             placeholderElement.find('.modal').modal('show');
         });
     }
-
-
 }
 
 

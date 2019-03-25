@@ -18,6 +18,7 @@ namespace SchedulerApp.Models.Team
         public TeamEdit(List<ILocation> locations)
         {
             FillLocationSelectList(locations);
+            IsAddNew = true;
         }
 
         public TeamEdit(ITeam team, List<ILocation> locations)
@@ -51,6 +52,8 @@ namespace SchedulerApp.Models.Team
         public bool IsAddNew { get; set; }
 
         public Guid TeamId { get; set; }
+
+        [Display(Name = "Location")]
         public Guid LocationId { get; set; }
 
         [Required]
@@ -69,7 +72,16 @@ namespace SchedulerApp.Models.Team
 
         public List<SelectListItem> LocationsSelectList { get; set; }
 
+        public string ModalTitle
+        {
+            get
+            {
+                if (IsAddNew) return "Add Team";
+                return $"Edit {TeamName}";
+            }
+        }
 
-       public ChangeResult Result { get; set; }
+
+        public ChangeResult Result { get; set; }
     }
 }

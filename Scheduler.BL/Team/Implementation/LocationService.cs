@@ -44,6 +44,22 @@ namespace Scheduler.BL.Team.Implementation
             return locations;
         }
 
+        public List<ILocation> GetLocations(List<Guid> locationIds)
+        {
+            List<ILocation> locations = new List<ILocation>();
+
+            List<string> ids = new List<string>();
+            foreach (Guid id in locationIds.Distinct()) ids.Add(id.ToString());
+
+            using(var context = new Data.ScheduleContext())
+            {
+                var items = context.Locations.Where(x => ids.Contains(x.LocationId) && !x.DeleteDate.HasValue);
+                foreach (var item in items) locations.Add(Mapper.Map<LocationDto>(item));
+            }
+
+            return locations;
+        }
+
 
         public ChangeResult AddLocation(ILocation location)
         {

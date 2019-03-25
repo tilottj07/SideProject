@@ -21,5 +21,9 @@
     <Folder Include="wwwroot\css\Team\" />
     <Folder Include="wwwroot\js\Team\" />
     <Folder Include="Views\Team\" />
+    <Folder Include="Models\Location\" />
+    <Folder Include="Views\Location\" />
+    <Folder Include="wwwroot\css\Location\" />
+    <Folder Include="wwwroot\js\Location\" />
   </ItemGroup>
 </Project>

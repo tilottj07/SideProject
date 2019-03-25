@@ -11,7 +11,6 @@ namespace Scheduler.BL.User.Interface.Models
         string FirstName { get; }
         string MiddleInitial { get; }
         string LastName { get; }
-        byte[] Photo { get; }
 
         string PrimaryPhoneNumber { get; }
         string BackupPhoneNumber { get; }

@@ -11,7 +11,6 @@ namespace Scheduler.Domain
         public string FirstName { get; set; }
         public string MiddleInitial { get; set; }
         public string LastName { get; set; }
-        public byte[] Photo { get; set; }
 
         public string PrimaryPhoneNumber { get; set; }
         public string BackupPhoneNumber { get; set; }

@@ -11,6 +11,7 @@ namespace Scheduler.BL.Team.Interface
         List<ITeam> GetLocationTeams(Guid locationId);
         List<ITeam> GetTeams();
         List<ITeam> GetTeams(List<Guid> teamIds);
+        List<ITeamDisplay> GetTeamDisplays();
 
         ChangeResult AddTeam(ITeam team);
         ChangeResult AddTeam(List<ITeam> teams);

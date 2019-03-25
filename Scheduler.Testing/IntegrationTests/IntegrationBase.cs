@@ -171,8 +171,8 @@ namespace Scheduler.Testing.IntegrationTests
             var item = Warranty.GetWarranty(warrantyId);
             Warranty.DeleteWarranty(item.WarrantyId);
 
-            Team.DeleteTeam(item.TeamId);
-            User.DeleteUser(item.UserId);
+            DeleteSeededTeam(item.TeamId);
+            DeleteSeededUser(item.UserId);
         }
 
     }

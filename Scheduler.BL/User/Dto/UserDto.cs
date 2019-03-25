@@ -11,7 +11,6 @@ namespace Scheduler.BL.User.Dto
         public string FirstName { get; set; }
         public string MiddleInitial { get; set; }
         public string LastName { get; set; }
-        public byte[] Photo { get; set; }
 
         public string PrimaryPhoneNumber { get; set; }
         public string BackupPhoneNumber { get; set; }
@@ -33,33 +32,8 @@ namespace Scheduler.BL.User.Dto
         {
             get
             {
-                string val = string.Empty;
-                if (!string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(MiddleInitial) && !string.IsNullOrWhiteSpace(LastName))
-                {
-                    val = $"{FirstName} {MiddleInitial}. {LastName}";
-                }
-                else if (!string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(LastName))
-                {
-                    val = $"{FirstName} {LastName}";
-                }
-                else if (!string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(MiddleInitial))
-                {
-                    val = $"{FirstName} {MiddleInitial}.";
-                }
-                else if (!string.IsNullOrWhiteSpace(FirstName))
-                {
-                    val = FirstName;
-                }
-                else if (!string.IsNullOrWhiteSpace(LastName))
-                {
-                    val = LastName;
-                }
-                else
-                {
-                    val = UserName;
-                }
-
-                return val.Trim();
+                return Shared.Helper.GetDisplayName(
+                    UserName, FirstName, MiddleInitial, LastName);
             }
         }
 

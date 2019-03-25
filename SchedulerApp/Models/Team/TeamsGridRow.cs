@@ -5,7 +5,7 @@ namespace SchedulerApp.Models.Team
 {
     public class TeamsGridRow
     {
-        public TeamsGridRow(ITeam team)
+        public TeamsGridRow(ITeamDisplay team)
         {
             TeamId = team.TeamId;
             LocationId = team.LocationId;
@@ -13,8 +13,8 @@ namespace SchedulerApp.Models.Team
             TeamDescription = team.TeamDescription;
             TeamLeaderId = team.TeamLeaderId;
             TeamEmail = team.TeamEmail;
-            TeamLocation = string.Empty;
-            TeamLeader = string.Empty;
+            TeamLocation = team.LocationName;
+            TeamLeader = team.LeaderDisplayName;
         }
 
         public Guid TeamId { get; set; }

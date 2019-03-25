@@ -66,5 +66,37 @@ namespace Scheduler.BL.Shared
             }
         }
 
+
+        public static string GetDisplayName(string userName, string firstName, string middleInitial, string lastName)
+        {
+            string val = string.Empty;
+            if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(middleInitial) && !string.IsNullOrWhiteSpace(lastName))
+            {
+                val = $"{firstName} {middleInitial}. {lastName}";
+            }
+            else if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(lastName))
+            {
+                val = $"{firstName} {lastName}";
+            }
+            else if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(middleInitial))
+            {
+                val = $"{firstName} {middleInitial}.";
+            }
+            else if (!string.IsNullOrWhiteSpace(firstName))
+            {
+                val = firstName;
+            }
+            else if (!string.IsNullOrWhiteSpace(lastName))
+            {
+                val = lastName;
+            }
+            else
+            {
+                val = userName;
+            }
+
+            return val.Trim();
+        }
+
     }
 }

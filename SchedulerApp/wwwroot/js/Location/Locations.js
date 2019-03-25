@@ -39,7 +39,7 @@ $(document).ready(function () {
     placeholderElement.on('click', '[data-save="delete"]', function (event) {
         event.preventDefault();
         var form = $(this).parents('.modal').find('form');
-        var actionUrl = getUrlPrefix() + 'Team/_deleteTeam/' + $('#TeamId').val();
+        var actionUrl = getUrlPrefix() + 'Location/_deleteLocation/' + $('#LocationId').val();
         var dataToSend = form.serialize();
 
         $.post(actionUrl, dataToSend).done(function (data) {
@@ -50,39 +50,41 @@ $(document).ready(function () {
 });
 
 function setupGrid() {
-    var table = $('#teamsTable').DataTable({
+    var table = $('#locationsTable').DataTable({
         "processing": false,
         "serverSide": false,
-        "ajax": getUrlPrefix() + "Team/_getTeamsGridData",
+        "ajax": getUrlPrefix() + "Location/_getLocationsGridData",
         "columns": [
-            { "data": "teamName" },
-            { "data": "teamDescription" },
-            { "data": "teamLocation" },
-            { "data": "teamEmail" },
-            { "data": "teamLeader" },
+            { "data": "locationName" },
+            { "data": "description" },
+            { "data": "address" },
+            { "data": "city" },
+            { "data": "stateRegion" },
+            { "data": "country" },
+            { "data": "zipCode" },
             { "defaultContent": "<button>Edit</button>" }
         ]
     });
 
-    $('#teamsTable tbody').on( 'click', 'button', function () {
+    $('#locationsTable tbody').on( 'click', 'button', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        editTeam(data.teamId);
+        editLocation(data.locationId);
     });
 }
 
 function reloadGridData() {
-    $('#teamsTable').DataTable().ajax.reload();
+    $('#locationsTable').DataTable().ajax.reload();
 }
 
 
-function editTeam(teamId) {
+function editLocation(locationId) {
 
-    var url = getUrlPrefix() + 'Team/EditTeamModal/' + teamId;
-    editTeamModal(url); 
+    var url = getUrlPrefix() + 'Location/EditLocationModal/' + locationId;
+    editLocationModal(url); 
 }
 
 
-function editTeamModal(url) {
+function editLocationModal(url) {
     var placeholderElement = $('#modal-placeholder');
 
     if (url != null) {
@@ -92,3 +94,4 @@ function editTeamModal(url) {
         });
     }
 }
+

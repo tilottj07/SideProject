@@ -10,6 +10,7 @@ namespace Scheduler.BL.Team.Interface
 
         ILocation GetLocation(Guid locationId);
         List<ILocation> GetLocations();
+        List<ILocation> GetLocations(List<Guid> locationIds);
 
         ChangeResult AddLocation(ILocation location);
         ChangeResult AddLocation(List<ILocation> locations);

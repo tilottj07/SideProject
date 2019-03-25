@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.BL.Shared;
+using Scheduler.BL.Shared.Models;
 using Scheduler.BL.Team.Dto;
 using Scheduler.BL.Team.Implementation;
 using Scheduler.BL.Team.Interface;
@@ -39,7 +40,7 @@ namespace SchedulerApp.Controllers
         {
             List<Models.Team.TeamsGridRow> rows = new List<Models.Team.TeamsGridRow>();
 
-            foreach (var team in TeamService.GetTeams())
+            foreach (var team in TeamService.GetTeamDisplays())
                 rows.Add(new Models.Team.TeamsGridRow(team));
 
             return Json(new { data = rows });
@@ -82,6 +83,33 @@ namespace SchedulerApp.Controllers
             }
 
             return PartialView("_TeamEditPartial", model);
+        }
+
+        [HttpPost]
+        public IActionResult _deleteTeam(string id)
+        {
+            ChangeResult result = new ChangeResult();
+            Guid? teamId = Helper.ConvertToGuid(id);
+            if (teamId.HasValue)
+            {
+                var team = TeamService.GetTeam(teamId.Value);
+                if (team != null)
+                {
+                    TeamDto dto = new TeamDto()
+                    {
+                        LocationId = team.LocationId,
+                        TeamDescription = team.TeamDescription,
+                        TeamEmail = team.TeamEmail,
+                        TeamId = team.TeamId,
+                        TeamLeaderId = team.TeamLeaderId,
+                        TeamName = team.TeamName,
+                        DeleteDate = DateTime.UtcNow
+                    };
+                    result = TeamService.UpdateTeam(dto);
+                }
+            }
+
+            return new JsonResult(result);
         }
     }
 }

@@ -9,6 +9,7 @@ using Scheduler.BL.Team.Interface;
 using Scheduler.BL.Team.Interface.Models;
 using Scheduler.BL.User.Implementation;
 using Scheduler.BL.User.Interface;
+using Scheduler.BL.User.Interface.Models;
 
 namespace Scheduler.BL.Team.Implementation
 {
@@ -71,6 +72,45 @@ namespace Scheduler.BL.Team.Implementation
             return teams;
         }
 
+        public List<ITeamDisplay> GetTeamDisplays()
+        {
+            List<ITeamDisplay> teamDisplays = new List<ITeamDisplay>();
+
+            if (UserService == null) UserService = new UserService();
+            if (LocationService == null) LocationService = new LocationService();
+
+            var teams = GetTeams();
+            var leaderDict = UserService.GetUsers(teams.Where(x => x.TeamLeaderId.HasValue).Select(x => x.TeamLeaderId.Value).Distinct().ToList()).ToDictionary(x => x.UserId);
+            var locationDict = LocationService.GetLocations(teams.Select(x => x.LocationId).Distinct().ToList()).ToDictionary(x => x.LocationId);
+
+            foreach(var team in teams)
+            {
+                IUser user = null;
+                ILocation loc = null;
+
+                if (team.TeamLeaderId.HasValue && leaderDict.ContainsKey(team.TeamLeaderId.Value)) user = leaderDict[team.TeamLeaderId.Value];
+                if (locationDict.ContainsKey(team.LocationId)) loc = locationDict[team.LocationId];
+
+                TeamDisplayDto dto = new TeamDisplayDto()
+                {
+                    TeamId = team.TeamId,
+                    LocationId = team.LocationId,
+                    TeamDescription = team.TeamDescription,
+                    TeamEmail = team.TeamEmail,
+                    TeamName = team.TeamName
+                };
+
+                if (user != null)
+                    dto.LeaderDisplayName = Helper.GetDisplayName(user.UserName, user.FirstName, user.MiddleInitial, user.LastName);
+
+                if (loc != null) dto.LocationName = loc.LocationName;
+
+                teamDisplays.Add(dto);
+            }
+
+            return teamDisplays;
+        }
+
         public ChangeResult AddTeam(ITeam team)
         {
             return AddTeam(new List<ITeam> { team });
@@ -90,6 +130,7 @@ namespace Scheduler.BL.Team.Implementation
                             TeamName = Helper.CleanString(item.TeamName),
                             TeamDescription = Helper.CleanString(item.TeamDescription),
                             TeamLeaderId = item.TeamLeaderId.HasValue ? item.TeamLeaderId.Value.ToString() : null,
+                            LocationId = item.LocationId.ToString(),
                             TeamEmail = Helper.CleanString(item.TeamEmail),
                             CreateDate = DateTime.UtcNow,
                             CreateUserId = item.CreateUserId.ToString(),
@@ -123,6 +164,7 @@ namespace Scheduler.BL.Team.Implementation
                             TeamName = Helper.CleanString(item.TeamName),
                             TeamDescription = Helper.CleanString(item.TeamDescription),
                             TeamLeaderId = item.TeamLeaderId.HasValue ? item.TeamLeaderId.Value.ToString() : null,
+                            LocationId = item.LocationId.ToString(),    
                             TeamEmail = Helper.CleanString(item.TeamEmail),
                             LastUpdateDate = DateTime.UtcNow,
                             LastUpdateUserId = item.LastUpdateUserId.ToString(),
@@ -196,6 +238,7 @@ namespace Scheduler.BL.Team.Implementation
         }
 
         private IUserService UserService;
+        private ILocationService LocationService;
 
 
         /// <summary>
