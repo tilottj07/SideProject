@@ -35,3 +35,8 @@ body {
         display: none;
     }
 }
+
+
+.float-right {
+    float: right;
+}

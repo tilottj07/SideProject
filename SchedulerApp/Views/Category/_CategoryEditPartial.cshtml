@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addCategoryLabel">@Model.ModalTitle</h5>
+                <span class="modal-title" id="addCategoryLabel">@Model.ModalTitle</span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -38,7 +38,7 @@
             <div class="modal-footer">
                 @if (Model.IsAddNew == false)
                 {
-                <button type="button" class="btn btn-secondary" data-save="delete">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-save="delete">Delete</button>
                 }
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" data-save="modal">Save</button>
