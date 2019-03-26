@@ -39,6 +39,7 @@ namespace SchedulerApp.Models.Location
         public string LocationName { get; set; }
 
         [StringLength(500)]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         [StringLength(100)]

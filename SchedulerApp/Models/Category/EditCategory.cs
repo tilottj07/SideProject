@@ -35,6 +35,7 @@ namespace SchedulerApp.Models.Category
         public string CategoryName { get; set; }
 
         [StringLength(500)]
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Category Description")]
         public string CategoryDescription { get; set; }
 

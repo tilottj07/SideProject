@@ -84,6 +84,7 @@ namespace SchedulerApp.Models.Team
 
         [Display(Name = "Team Description")]
         [MaxLength(500)]
+        [DataType(DataType.MultilineText)]
         public string TeamDescription { get; set; }
 
         public List<SelectListItem> LocationsSelectList { get; set; }

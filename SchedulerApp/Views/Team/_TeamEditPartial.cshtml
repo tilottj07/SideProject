@@ -24,7 +24,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="TeamDescription"></label>
-                        <textarea asp-for="TeamDescription" class="form-control" />
+                        <textarea asp-for="TeamDescription" class="form-control">@Model.TeamDescription</textarea>
                         <span asp-validation-for="TeamDescription" class="text-danger"></span>
                     </div>
                     <div class="form-group">
