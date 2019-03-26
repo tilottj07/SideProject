@@ -1,6 +1,10 @@
 ﻿
 $(document).ready(function () {
 
+    //bootbox.alert("This is the default alert!");
+
+    bootbox.alert('test');
+
     setupGrid();
 
     var placeholderElement = $('#modal-placeholder');
