@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     //bootbox.alert("This is the default alert!");
 
-    bootbox.alert('test');
+   // bootbox.alert('test');
 
     setupGrid();
 
@@ -95,3 +95,7 @@ function editCategoryModal(url) {
     }
 }
 
+
+function testAlert() {
+    alertify.alert('Ready!');
+}
