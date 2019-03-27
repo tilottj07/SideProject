@@ -14,6 +14,8 @@ namespace Scheduler.BL.Team.Interface
         List<ITeamUser> GetTeamUsersByUserId(Guid userId);
         List<ITeamUser> GetTeamUsers();
 
+        ChangeResult SaveTeamUsers(Guid teamId, List<Guid> userIds, Guid? changeUserId = null);
+
         ChangeResult AddTeamUser(ITeamUser teamUser);
         ChangeResult AddTeamUser(List<ITeamUser> teamUsers);
 

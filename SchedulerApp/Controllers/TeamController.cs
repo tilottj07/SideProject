@@ -91,16 +91,15 @@ namespace SchedulerApp.Controllers
                 if (model.IsAddNew) model.Result = TeamService.AddTeam(dto);
                 else model.Result = TeamService.UpdateTeam(dto);
 
+                if (model.Result.Ids.Count == 1)
+                    model.TeamId = model.Result.Ids.FirstOrDefault();
+
                 if (model.Result.IsSuccess && model.TeamUserIds != null && model.TeamUserIds.Any())
-                {
-                    //TODO: save team users
-                }
+                    model.Result = TeamUserService.SaveTeamUsers(model.TeamId, model.TeamUserIds.ToList());
             }
             else
             {
                 var users = UserService.GetUsers();
-
-                //TODO: build list of team users that were added and not saved so no work is lost
 
                 model.FillLocationSelectList(LocationService.GetLocations());
                 model.FillTeamLeaderSelectList(users);

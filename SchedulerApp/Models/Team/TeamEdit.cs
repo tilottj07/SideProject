@@ -69,17 +69,38 @@ namespace SchedulerApp.Models.Team
         {
             TeamUsersSelectList = new List<SelectListItem>();
 
+            List<Guid> addedUserIds = new List<Guid>();
+
             //add team users first
             foreach(var tu in teamUsers)
             {
                 var user = users.FirstOrDefault(x => x.UserId == tu.UserId);
                 if (user != null)
+                {
                     TeamUsersSelectList.Add(new SelectListItem() { Text = user.DisplayName, Value = tu.UserId.ToString(), Selected = true });
+                    addedUserIds.Add(tu.UserId);
+                }
+            }
+
+            if (TeamUserIds != null)
+            {
+                foreach (Guid userId in TeamUserIds)
+                {
+                    if (!addedUserIds.Contains(userId))
+                    {
+                        var user = users.FirstOrDefault(x => x.UserId == userId);
+                        if (user != null)
+                        {
+                            TeamUsersSelectList.Add(new SelectListItem() { Text = user.DisplayName, Value = userId.ToString(), Selected = true });
+                            addedUserIds.Add(userId);
+                        }
+                    }
+                }
             }
 
             foreach (var u in users)
             {
-                if (!teamUsers.Select(x => x.UserId).Contains(u.UserId))
+                if (!addedUserIds.Contains(u.UserId))
                     TeamUsersSelectList.Add(new SelectListItem() { Text = u.DisplayName, Value = u.UserId.ToString(), Selected = false });
             }
         }

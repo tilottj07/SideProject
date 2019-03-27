@@ -124,9 +124,10 @@ namespace Scheduler.BL.Team.Implementation
                 {
                     foreach(var item in teams)
                     {
+                        Guid id = item.TeamId == Guid.Empty ? Guid.NewGuid() : item.TeamId;
                         context.Teams.Add(new Domain.Team()
                         {
-                            TeamId = item.TeamId == Guid.Empty ? Guid.NewGuid().ToString() : item.TeamId.ToString(),
+                            TeamId = id.ToString(),
                             TeamName = Helper.CleanString(item.TeamName),
                             TeamDescription = Helper.CleanString(item.TeamDescription),
                             TeamLeaderId = item.TeamLeaderId.HasValue ? item.TeamLeaderId.Value.ToString() : null,
@@ -138,6 +139,7 @@ namespace Scheduler.BL.Team.Implementation
                             LastUpdateUserId = item.LastUpdateUserId.ToString(),
                             DeleteDate = item.DeleteDate
                         });
+                        result.Ids.Add(id);
                     }
                     context.SaveChanges();
                 }
@@ -170,6 +172,7 @@ namespace Scheduler.BL.Team.Implementation
                             LastUpdateUserId = item.LastUpdateUserId.ToString(),
                             DeleteDate = item.DeleteDate
                         });
+                        result.Ids.Add(item.TeamId);
                     }
                     context.SaveChanges();
                 }
