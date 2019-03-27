@@ -16,14 +16,15 @@ namespace SchedulerApp.Models.Team
             IsAddNew = true;
         }
 
-        public TeamEdit(List<ILocation> locations, List<IUser> users)
+        public TeamEdit(List<ILocation> locations, List<IUser> users, List<ITeamUser> teamUsers)
         {
             FillLocationSelectList(locations);
             FillTeamLeaderSelectList(users);
+            FillTeamUsersSelectList(users, teamUsers);
             IsAddNew = true;
         }
 
-        public TeamEdit(ITeam team, List<ILocation> locations, List<IUser> users)
+        public TeamEdit(ITeam team, List<ILocation> locations, List<IUser> users, List<ITeamUser> teamUsers)
         {
             if (team != null)
             {
@@ -39,6 +40,7 @@ namespace SchedulerApp.Models.Team
 
             FillLocationSelectList(locations);
             FillTeamLeaderSelectList(users);
+            FillTeamUsersSelectList(users, teamUsers);
         }
 
 
@@ -61,6 +63,25 @@ namespace SchedulerApp.Models.Team
 
             foreach (var user in users)
                 TeamLeaderSelectList.Add(new SelectListItem() { Text = user.DisplayName, Value = user.UserId.ToString(), Selected = user.UserId == TeamLeaderId });
+        }
+
+        public void FillTeamUsersSelectList(List<IUser> users, List<ITeamUser> teamUsers)
+        {
+            TeamUsersSelectList = new List<SelectListItem>();
+
+            //add team users first
+            foreach(var tu in teamUsers)
+            {
+                var user = users.FirstOrDefault(x => x.UserId == tu.UserId);
+                if (user != null)
+                    TeamUsersSelectList.Add(new SelectListItem() { Text = user.DisplayName, Value = tu.UserId.ToString(), Selected = true });
+            }
+
+            foreach (var u in users)
+            {
+                if (!teamUsers.Select(x => x.UserId).Contains(u.UserId))
+                    TeamUsersSelectList.Add(new SelectListItem() { Text = u.DisplayName, Value = u.UserId.ToString(), Selected = false });
+            }
         }
 
         public bool IsAddNew { get; set; }
@@ -89,6 +110,11 @@ namespace SchedulerApp.Models.Team
 
         public List<SelectListItem> LocationsSelectList { get; set; }
         public List<SelectListItem> TeamLeaderSelectList { get; set; }
+        public List<SelectListItem> TeamUsersSelectList { get; set; }
+
+
+        [Display(Name = "Team Users")]
+        public IEnumerable<Guid> TeamUserIds { get; set; }
 
         public string ModalTitle
         {

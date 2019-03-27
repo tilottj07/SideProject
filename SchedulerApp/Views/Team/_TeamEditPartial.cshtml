@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label asp-for="LocationId"></label>
                         <select asp-for="LocationId"
-                                asp-items="Model.LocationsSelectList"></select>
+                                asp-items="Model.LocationsSelectList" class="selectpicker"></select>
                         <span asp-validation-for="LocationId" class="text-danger"></span>
                     </div>
                     <div class="form-group">    
@@ -43,6 +43,12 @@
                         <select asp-for="TeamLeaderId"
                                 asp-items="Model.TeamLeaderSelectList"></select>
                         <span asp-validation-for="TeamLeaderId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TeamUserIds"></label>
+                        <select asp-for="TeamUserIds"
+                                asp-items="Model.TeamUsersSelectList"></select>
+                        <span asp-validation-for="TeamUserIds" class="text-danger"></span>
                     </div>
 
                 </form>

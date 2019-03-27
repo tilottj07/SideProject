@@ -8,6 +8,7 @@ using Scheduler.BL.Shared.Models;
 using Scheduler.BL.Team.Dto;
 using Scheduler.BL.Team.Implementation;
 using Scheduler.BL.Team.Interface;
+using Scheduler.BL.Team.Interface.Models;
 using Scheduler.BL.User.Implementation;
 using Scheduler.BL.User.Interface;
 
@@ -20,12 +21,14 @@ namespace SchedulerApp.Controllers
         private ITeamService TeamService;
         private ILocationService LocationService;
         private IUserService UserService;
+        private ITeamUserService TeamUserService;
 
         public TeamController()
         {
             TeamService = new TeamService();
             LocationService = new LocationService();
             UserService = new UserService();
+            TeamUserService = new TeamUserService();
         }
 
         // GET: /<controller>/
@@ -56,14 +59,16 @@ namespace SchedulerApp.Controllers
             Guid? teamId = Helper.ConvertToGuid(id);
             var locations = LocationService.GetLocations();
             var users = UserService.GetUsers();
+            List<ITeamUser> teamUsers = new List<ITeamUser>();
 
             Models.Team.TeamEdit model = new Models.Team.TeamEdit();
             if (teamId.HasValue)
             {
                 var team = TeamService.GetTeam(teamId.Value);
-                model = new Models.Team.TeamEdit(team, locations, users);
+                teamUsers = TeamUserService.GetTeamUsersByTeamId(teamId.Value);
+                model = new Models.Team.TeamEdit(team, locations, users, teamUsers);
             }
-            else model = new Models.Team.TeamEdit(locations, users);
+            else model = new Models.Team.TeamEdit(locations, users, teamUsers);
 
             return PartialView("_TeamEditPartial", model);
         }
@@ -85,11 +90,21 @@ namespace SchedulerApp.Controllers
 
                 if (model.IsAddNew) model.Result = TeamService.AddTeam(dto);
                 else model.Result = TeamService.UpdateTeam(dto);
+
+                if (model.Result.IsSuccess && model.TeamUserIds != null && model.TeamUserIds.Any())
+                {
+                    //TODO: save team users
+                }
             }
             else
             {
+                var users = UserService.GetUsers();
+
+                //TODO: build list of team users that were added and not saved so no work is lost
+
                 model.FillLocationSelectList(LocationService.GetLocations());
-                model.FillTeamLeaderSelectList(UserService.GetUsers());
+                model.FillTeamLeaderSelectList(users);
+                model.FillTeamUsersSelectList(users, TeamUserService.GetTeamUsersByTeamId(model.TeamId));
             }
 
             return PartialView("_TeamEditPartial", model);
