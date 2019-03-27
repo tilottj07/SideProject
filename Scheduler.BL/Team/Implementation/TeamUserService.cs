@@ -125,6 +125,52 @@ namespace Scheduler.BL.Team.Implementation
             return result;
         }
 
+        public ChangeResult SaveUserTeams(Guid userId, List<Guid> teamIds, Guid? changeUserId = null)
+        {
+            ChangeResult result = new ChangeResult();
+            using (var context = new Data.ScheduleContext())
+            {
+                var existingTeams = context.TeamUsers.Where(x => x.UserId == userId.ToString());
+                List<Guid> existingTeamIds = new List<Guid>();
+                foreach (var item in existingTeams)
+                {
+                    if (!teamIds.Contains(Guid.Parse(item.TeamId)))
+                    {
+                        item.DeleteDate = DateTime.UtcNow;
+                        item.LastUpdateDate = DateTime.UtcNow;
+                        if (changeUserId.HasValue) item.LastUpdateUserId = changeUserId.Value.ToString();
+                    }  
+                    else if (item.DeleteDate.HasValue)
+                    {
+                        item.DeleteDate = null;
+                        item.LastUpdateDate = DateTime.UtcNow;
+                        if (changeUserId.HasValue) item.LastUpdateUserId = changeUserId.Value.ToString();
+                    }
+                }
+
+                foreach (Guid teamId in teamIds)
+                {
+                    if (!existingTeamIds.Contains(teamId))
+                    {
+                        context.TeamUsers.Add(new Domain.TeamUser()
+                        {
+                            TeamUserId = Guid.NewGuid().ToString(),
+                            TeamId = teamId.ToString(),
+                            UserId = userId.ToString(),
+                            CreateDate = DateTime.UtcNow,
+                            CreateUserId = changeUserId.HasValue ? changeUserId.Value.ToString() : null,
+                            LastUpdateDate = DateTime.UtcNow,
+                            LastUpdateUserId = changeUserId.HasValue ? changeUserId.Value.ToString() : null,
+                            DeleteDate = null
+                        });
+                    }
+                }
+
+                context.SaveChanges();
+            }
+
+            return result;
+        }
 
 
         public ChangeResult AddTeamUser(ITeamUser teamUser)

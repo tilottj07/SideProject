@@ -7,6 +7,10 @@ using SchedulerApp.Models.User;
 using Scheduler.BL.User.Dto;
 using Scheduler.BL.Shared;
 using Scheduler.BL.Shared.Models;
+using Scheduler.BL.Team.Interface.Models;
+using Scheduler.BL.Team.Interface;
+using Scheduler.BL.Team.Implementation;
+using System.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,10 +19,14 @@ namespace SchedulerApp.Controllers
     public class UserController : Controller
     {
         private IUserService UserService;
+        private ITeamService TeamService;
+        private ITeamUserService TeamUserService;
 
         public UserController()
         {
             UserService = new UserService();
+            TeamService = new TeamService();
+            TeamUserService = new TeamUserService();
         }
 
         // GET: /<controller>/
@@ -47,13 +55,17 @@ namespace SchedulerApp.Controllers
 
         public IActionResult EditUserModal(string id)
         {
-            UserEdit vm = new UserEdit();
+            UserEdit vm;
+            List<ITeam> teams = TeamService.GetTeams();
+            List<ITeamUser> teamUsers = new List<ITeamUser>();
 
             Guid? userId = Helper.ConvertToGuid(id);
             if (userId.HasValue)
             {
-                vm = new UserEdit(UserService.GetUser(userId.Value));
+                teamUsers = TeamUserService.GetTeamUsersByUserId(userId.Value);
+                vm = new UserEdit(UserService.GetUser(userId.Value), teams, teamUsers);
             }
+            else vm = new UserEdit(teams, teamUsers);
            
             return PartialView("_UserEditPartial", vm);
         }
@@ -80,7 +92,16 @@ namespace SchedulerApp.Controllers
                     model.Result = UserService.AddUser(dto);
                 else
                     model.Result = UserService.UpdateUser(dto);
+
+                if (model.Result.IsSuccess && model.Result.Ids.Count == 1)
+                    model.UserId = model.Result.Ids.FirstOrDefault();
+
+                if (model.UserTeamIds != null && model.UserTeamIds.Any())
+                    model.Result = TeamUserService.SaveUserTeams(model.UserId, model.UserTeamIds.ToList());
             }
+            else
+                model.FillUserTeamsSelectList(TeamService.GetTeams(), TeamUserService.GetTeamUsersByUserId(model.UserId));
+
             return PartialView("_UserEditPartial", model);
         }
 

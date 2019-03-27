@@ -11,49 +11,55 @@
             </div>
 
              <div class="modal-body">
-                <form asp-action="EditUserModal">
-                
-                    @Html.HiddenFor(x => x.UserId)
-                    @Html.HiddenFor(x => x.IsAddNew)
-                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                 <form asp-action="EditUserModal">
 
-                    <div class="form-group">
-                        <label asp-for="UserName"></label>
-                        <input asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FirstName"></label>
-                        <input asp-for="FirstName" class="form-control" />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="MiddleInitial"></label>
-                        <input asp-for="MiddleInitial" class="form-control" />
-                        <span asp-validation-for="MiddleInitial" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="LastName"></label>
-                        <input asp-for="LastName" class="form-control" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PrimaryEmail"></label>
-                        <input asp-for="PrimaryEmail" class="form-control" />
-                        <span asp-validation-for="PrimaryEmail" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PrimaryPhoneNumber"></label>
-                        <input asp-for="PrimaryPhoneNumber" class="form-control" />
-                        <span asp-validation-for="PrimaryPhoneNumber" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="BackupPhoneNumber"></label>
-                        <input asp-for="BackupPhoneNumber" class="form-control" />
-                        <span asp-validation-for="BackupPhoneNumber" class="text-danger"></span>
-                    </div>
+                     @Html.HiddenFor(x => x.UserId)
+                     @Html.HiddenFor(x => x.IsAddNew)
+                     <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
 
-                </form>
+                     <div class="form-group">
+                         <label asp-for="UserName"></label>
+                         <input asp-for="UserName" class="form-control" />
+                         <span asp-validation-for="UserName" class="text-danger"></span>
+                     </div>
+                     <div class="form-group">
+                         <label asp-for="FirstName"></label>
+                         <input asp-for="FirstName" class="form-control" />
+                         <span asp-validation-for="FirstName" class="text-danger"></span>
+                     </div>
+                     <div class="form-group">
+                         <label asp-for="MiddleInitial"></label>
+                         <input asp-for="MiddleInitial" class="form-control" />
+                         <span asp-validation-for="MiddleInitial" class="text-danger"></span>
+                     </div>
+                     <div class="form-group">
+                         <label asp-for="LastName"></label>
+                         <input asp-for="LastName" class="form-control" />
+                         <span asp-validation-for="LastName" class="text-danger"></span>
+                     </div>
+                     <div class="form-group">
+                         <label asp-for="PrimaryEmail"></label>
+                         <input asp-for="PrimaryEmail" class="form-control" />
+                         <span asp-validation-for="PrimaryEmail" class="text-danger"></span>
+                     </div>
+                     <div class="form-group">
+                         <label asp-for="PrimaryPhoneNumber"></label>
+                         <input asp-for="PrimaryPhoneNumber" class="form-control" />
+                         <span asp-validation-for="PrimaryPhoneNumber" class="text-danger"></span>
+                     </div>
+                     <div class="form-group">
+                         <label asp-for="BackupPhoneNumber"></label>
+                         <input asp-for="BackupPhoneNumber" class="form-control" />
+                         <span asp-validation-for="BackupPhoneNumber" class="text-danger"></span>
+                     </div>
+                     <div class="form-group">
+                         <label asp-for="UserTeamIds"></label>
+                         <select class="form-control" asp-for="UserTeamIds"
+                                 asp-items="Model.UserTeamsSelectList"></select>
+                         <span asp-validation-for="UserTeamIds" class="text-danger"></span>
+                     </div>
+
+                 </form>
             </div>
             <div class="modal-footer">
                 @if (Model.IsAddNew == false)

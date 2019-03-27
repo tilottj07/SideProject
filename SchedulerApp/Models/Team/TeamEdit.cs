@@ -61,7 +61,7 @@ namespace SchedulerApp.Models.Team
                 new SelectListItem() { Text = "None", Value = string.Empty, Selected = TeamLeaderId == null }
             };
 
-            foreach (var user in users)
+            foreach (var user in users.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ThenBy(x => x.UserName))
                 TeamLeaderSelectList.Add(new SelectListItem() { Text = user.DisplayName, Value = user.UserId.ToString(), Selected = user.UserId == TeamLeaderId });
         }
 
@@ -74,11 +74,14 @@ namespace SchedulerApp.Models.Team
             //add team users first
             foreach(var tu in teamUsers)
             {
-                var user = users.FirstOrDefault(x => x.UserId == tu.UserId);
-                if (user != null)
+                if (!addedUserIds.Contains(tu.UserId))
                 {
-                    TeamUsersSelectList.Add(new SelectListItem() { Text = user.DisplayName, Value = tu.UserId.ToString(), Selected = true });
-                    addedUserIds.Add(tu.UserId);
+                    var user = users.FirstOrDefault(x => x.UserId == tu.UserId);
+                    if (user != null)
+                    {
+                        TeamUsersSelectList.Add(new SelectListItem() { Text = user.DisplayName, Value = tu.UserId.ToString(), Selected = true });
+                        addedUserIds.Add(tu.UserId);
+                    }
                 }
             }
 
@@ -98,7 +101,7 @@ namespace SchedulerApp.Models.Team
                 }
             }
 
-            foreach (var u in users)
+            foreach (var u in users.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ThenBy(x => x.UserName))
             {
                 if (!addedUserIds.Contains(u.UserId))
                     TeamUsersSelectList.Add(new SelectListItem() { Text = u.DisplayName, Value = u.UserId.ToString(), Selected = false });
@@ -134,7 +137,7 @@ namespace SchedulerApp.Models.Team
         public List<SelectListItem> TeamUsersSelectList { get; set; }
 
 
-        [Display(Name = "Team Users")]
+        [Display(Name = "Team Users (hold cntrl to select)")]
         public IEnumerable<Guid> TeamUserIds { get; set; }
 
         public string ModalTitle

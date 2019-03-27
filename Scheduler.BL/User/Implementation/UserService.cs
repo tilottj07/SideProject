@@ -111,9 +111,10 @@ namespace Scheduler.BL.User.Implementation
                 {
                     foreach (var user in users)
                     {
+                        Guid id = user.UserId == Guid.Empty ? Guid.NewGuid() : user.UserId;
                         context.Users.Add(new Domain.User()
                         {
-                            UserId = user.UserId == Guid.Empty ? Guid.NewGuid().ToString() : user.UserId.ToString(),
+                            UserId = id.ToString(),
                             UserName = Helper.CleanString(user.UserName).ToUpper(),
                             FirstName = Helper.CleanString(user.FirstName),
                             MiddleInitial = Helper.CleanString(user.MiddleInitial),
@@ -129,6 +130,7 @@ namespace Scheduler.BL.User.Implementation
                             LastUpdateUserId = user.LastUpdateUserId.ToString(),
                             DeleteDate = user.DeleteDate
                         });
+                        result.Ids.Add(id);
                     }
                     context.SaveChanges();
                 }
@@ -169,6 +171,7 @@ namespace Scheduler.BL.User.Implementation
                             LastUpdateUserId = user.LastUpdateUserId.ToString(),
                             DeleteDate = user.DeleteDate
                         });
+                        result.Ids.Add(user.UserId);
                     }
                     context.SaveChanges();
                 }
