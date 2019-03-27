@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.BL.Shared;
+using Scheduler.BL.Shared.Models;
 using Scheduler.BL.Team.Dto;
 using Scheduler.BL.Team.Implementation;
 using Scheduler.BL.Team.Interface;
@@ -72,6 +73,33 @@ namespace SchedulerApp.Controllers
                     model.Result = CategoryService.UpdateCategory(dto);
             }
             return PartialView("_CategoryEditPartial", model);
+        }
+
+        [HttpPost]
+        public IActionResult _deleteCategory(string id)
+        {
+            Guid? categoryId = Helper.ConvertToGuid(id);
+            ChangeResult result = new ChangeResult();
+
+            if (categoryId.HasValue)
+            {
+                var model = CategoryService.GetCategory(categoryId.Value);
+                if (model != null)
+                {
+                    CategoryDto dto = new CategoryDto()
+                    {
+                        CategoryDescription = model.CategoryDescription,
+                        CategoryEmail = model.CategoryEmail,
+                        CategoryId = model.CategoryId,
+                        CategoryName = model.CategoryName,
+                        DeleteDate = model.DeleteDate
+                    };
+
+                    result = CategoryService.UpdateCategory(dto);
+                }
+            }
+
+            return new JsonResult(result);
         }
 
 

@@ -1,9 +1,16 @@
 ﻿
 $(document).ready(function () {
 
-    //bootbox.alert("This is the default alert!");
-
-   // bootbox.alert('test');
+    $("#confirm").on('click', function (e) {
+        if (e.preventDefault) { e.preventDefault(); }
+        alertify.confirm("This is a confirm dialog", function (e) {
+            if (e) {
+                alertify.success("You've clicked OK");
+            } else {
+                alertify.error("You've clicked Cancel");
+            }
+        });
+    });
 
     setupGrid();
 
@@ -42,16 +49,27 @@ $(document).ready(function () {
 
     placeholderElement.on('click', '[data-save="delete"]', function (event) {
         event.preventDefault();
-        var form = $(this).parents('.modal').find('form');
-        var actionUrl = getUrlPrefix() + 'Category/_deleteCategory/' + $('#CategoryId').val();
-        var dataToSend = form.serialize();
 
-        $.post(actionUrl, dataToSend).done(function (data) {
-            placeholderElement.find('.modal').modal('hide');
-            reloadGridData();
-        });
+        var categoryName = $('#CategoryName').val();
+
+
+        alertify.confirm('Delete Category', 'Delete ' + categoryName + '?',
+            function () { alertify.success('Ok'); deleteItem(); },
+            function () { alertify.error('Cancel') });
+                             
     });
 });
+
+function deleteItem () {
+    var form = $('#EditCategoryModalForm');
+    var actionUrl = getUrlPrefix() + 'Category/_deleteCategory/' + $('#CategoryId').val();
+    var dataToSend = form.serialize();
+
+    $.post(actionUrl, dataToSend).done(function (data) {
+        placeholderElement.find('.modal').modal('hide');
+        reloadGridData();
+    });
+}
 
 function setupGrid() {
     var table = $('#categoriesTable').DataTable({
@@ -97,5 +115,6 @@ function editCategoryModal(url) {
 
 
 function testAlert() {
-    alertify.alert('Ready!');
+
+    alertify.alert('woot');
 }

@@ -11,7 +11,7 @@
             </div>
 
             <div class="modal-body">
-                <form asp-action="EditCategoryModal">
+                <form asp-action="EditCategoryModal" id="EditCategoryModalForm">
 
                     @Html.HiddenFor(x => x.CategoryId)
                     @Html.HiddenFor(x => x.IsAddNew)
