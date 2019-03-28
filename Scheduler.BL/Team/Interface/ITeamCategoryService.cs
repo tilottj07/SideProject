@@ -17,6 +17,8 @@ namespace Scheduler.BL.Team.Interface
         ChangeResult UpdateTeamCategory(ITeamCategory teamCategory);
         ChangeResult UpdateTeamCategory(List<ITeamCategory> teamCategories);
 
+        ChangeResult SaveTeamCategories(Guid teamId, List<Guid> categoryIds, Guid? changeUserId = null);
+
         ChangeResult DeleteTeamCategory(Guid teamId, Guid categoryId);
     }
 }

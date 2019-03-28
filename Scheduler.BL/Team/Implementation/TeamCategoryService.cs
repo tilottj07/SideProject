@@ -54,6 +54,55 @@ namespace Scheduler.BL.Team.Implementation
         }
 
 
+        public ChangeResult SaveTeamCategories(Guid teamId, List<Guid> categoryIds, Guid? changeUserId = null)
+        {
+            ChangeResult result = new ChangeResult();
+            using(var context = new Data.ScheduleContext())
+            {
+                var existingTeamCats = context.TeamCategories.Where(x => x.TeamId == teamId.ToString());
+                List<Guid> existingCatIds = new List<Guid>();
+
+                foreach(var item in existingTeamCats)
+                {
+                    if (!categoryIds.Contains(Guid.Parse(item.CategoryId)) && !item.DeleteDate.HasValue)
+                    {
+                        item.DeleteDate = DateTime.UtcNow;
+                        item.LastUpdateDate = DateTime.UtcNow;
+                        if (changeUserId.HasValue) item.LastUpdateUserId = changeUserId.Value.ToString();
+                    }
+                    else if (item.DeleteDate.HasValue)
+                    {
+                        item.DeleteDate = null;
+                        item.LastUpdateDate = DateTime.UtcNow;
+                        if (changeUserId.HasValue) item.LastUpdateUserId = changeUserId.Value.ToString();
+                    }
+                    existingCatIds.Add(Guid.Parse(item.CategoryId));
+                }
+
+                foreach(Guid categoryId in categoryIds)
+                {
+                    if (!existingCatIds.Contains(categoryId))
+                    {
+                        context.TeamCategories.Add(new Domain.TeamCategory()
+                        {
+                            TeamCategoryId = Guid.NewGuid().ToString(),
+                            CategoryId = categoryId.ToString(),
+                            TeamId = teamId.ToString(),
+                            CreateDate = DateTime.UtcNow,
+                            LastUpdateDate = DateTime.UtcNow,
+                            CreateUserId = changeUserId.HasValue ? changeUserId.Value.ToString() : null,
+                            LastUpdateUserId = changeUserId.HasValue ? changeUserId.Value.ToString() : null
+                        });
+                    }
+                }
+
+                context.SaveChanges();
+            }
+
+            return result;
+        }
+
+
         public ChangeResult AddTeamCategory(ITeamCategory teamCategory)
         {
             return AddTeamCategory(new List<ITeamCategory> { teamCategory });
