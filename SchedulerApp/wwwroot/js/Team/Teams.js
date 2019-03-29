@@ -1,8 +1,9 @@
 ﻿
 $(document).ready(function () {
 
-    setupGrid();
+    //$("#testing123").jQueryMultiSelection();
 
+    setupGrid();
 
     var placeholderElement = $('#modal-placeholder');
 
@@ -11,8 +12,7 @@ $(document).ready(function () {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
-
-            $('#TeamUserIds').multiselect();
+          //  $('#TeamUserIds').jQueryMultiSelection();
         });
     });
     
