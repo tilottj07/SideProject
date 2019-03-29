@@ -3,6 +3,7 @@ $(document).ready(function () {
 
     setupGrid();
 
+
     var placeholderElement = $('#modal-placeholder');
 
     $('button[data-toggle="ajax-modal"]').click(function (event) {
@@ -10,6 +11,8 @@ $(document).ready(function () {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
+
+            $('#TeamUserIds').multiselect();
         });
     });
     
