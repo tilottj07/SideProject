@@ -29,6 +29,79 @@ namespace Scheduler.BL.Schedule.Implementation
             Backup = 1
         }
 
+        public enum TimeInterval
+        {
+            Day = 0,
+            Week = 1,
+            Month = 2
+        }
+
+        public List<ISchedule> GetTeamScheduleByInterval(Guid teamId, DateTime startDate, DateTime endDate, TimeInterval interval)
+        {
+            return GroupScheduleByInterval(
+                GetSchedulesByTeamId(teamId, startDate, endDate), 
+                    startDate, endDate, interval);
+        }
+
+        public List<ISchedule> GetUserScheduleByInterval(Guid userId, DateTime startDate, DateTime endDate, TimeInterval interval)
+        {
+            return GroupScheduleByInterval(
+                GetSchedulesByUserId(userId, startDate, endDate),
+                    startDate, endDate, interval);
+        }
+
+        public List<ISchedule> GetAllSchedulesByInterval(DateTime startDate, DateTime endDate, TimeInterval interval)
+        {
+            return GroupScheduleByInterval(
+                GetSchedules(startDate, endDate),
+                    startDate, endDate, interval);
+        }
+
+
+        private List<ISchedule> GroupScheduleByInterval(List<ISchedule> schedules, DateTime beginningDate, DateTime finishDate, TimeInterval interval)
+        {
+            List<ISchedule> list = new List<ISchedule>();
+            if (schedules.Count > 0)
+            {
+                int daysPerInterval = 1;
+                switch(interval)
+                {
+                    case TimeInterval.Day:
+                        daysPerInterval = 1;
+                        break;
+                    case TimeInterval.Week:
+                        daysPerInterval = 7;
+                        break;
+                    case TimeInterval.Month:
+                        daysPerInterval = 30;
+                        break;  
+                }
+
+                DateTime startDate = beginningDate;
+                while(startDate <= finishDate)
+                {
+                    DateTime endDate = startDate.AddDays(daysPerInterval);
+                    var matches = schedules.Where(x => (x.StartDate >= startDate && x.StartDate <= endDate)
+                        || (x.EndDate >= startDate && x.EndDate <= endDate)
+                        || (x.StartDate <= startDate && x.EndDate >= endDate))
+                            .OrderBy(x => x.TeamId).ThenBy(x => x.StartDate).ToList();
+
+                    foreach(var match in matches)
+                    {
+                        var dto = FillScheduleDto(match);
+
+                        if (dto.StartDate < startDate) dto.StartDate = startDate;
+                        if (dto.EndDate > endDate) dto.EndDate = endDate;
+
+                        list.Add(dto);
+                    }
+
+                    startDate = endDate;
+                }
+            }
+            return list;
+        }
+
 
         public ISchedule GetSchedule(Guid scheduleId)
         {

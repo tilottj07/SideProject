@@ -36,4 +36,6 @@ body {
     }
 }
 
-
+.full-screen {
+    width: 100%;
+}

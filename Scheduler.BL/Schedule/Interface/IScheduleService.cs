@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Scheduler.BL.Schedule.Interface.Models;
 using Scheduler.BL.Shared.Models;
+using static Scheduler.BL.Schedule.Implementation.ScheduleService;
 
 namespace Scheduler.BL.Schedule.Interface
 {
@@ -11,6 +12,11 @@ namespace Scheduler.BL.Schedule.Interface
         ISchedule GetSchedule(Guid scheduleId);
         List<ISchedule> GetSchedulesByTeamId(Guid teamId, DateTime startDate, DateTime endDate);
         List<ISchedule> GetSchedulesByUserId(Guid userId, DateTime startDate, DateTime endDate);
+
+        List<ISchedule> GetTeamScheduleByInterval(Guid teamId, DateTime startDate, DateTime endDate, TimeInterval interval);
+        List<ISchedule> GetUserScheduleByInterval(Guid userId, DateTime startDate, DateTime endDate, TimeInterval interval);
+        List<ISchedule> GetAllSchedulesByInterval(DateTime startDate, DateTime endDate, TimeInterval interval);
+
         List<ISchedule> GetSchedules(DateTime startDate, DateTime endDate);
 
         ChangeResult SaveSchedule(ISchedule schedule);

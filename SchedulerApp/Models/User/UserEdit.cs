@@ -80,7 +80,7 @@ namespace SchedulerApp.Models.User
 
         public List<SelectListItem> UserTeamsSelectList { get; set; }
 
-        [Display(Name = "User Teams (hold cntrl to select)")]
+        [Display(Name = "User Teams")]
         public IEnumerable<Guid> UserTeamIds { get; set; }
 
 

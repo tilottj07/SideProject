@@ -10,6 +10,7 @@ $(document).ready(function () {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
+            setupSelectLists();
         });
     });
     
@@ -90,8 +91,13 @@ function editUserModal(url) {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
+            setupSelectLists();
         });
     }
 }
 
+
+function setupSelectLists() {
+    $('#UserTeamIds').select2();
+}
 

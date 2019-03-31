@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="DataTables.AspNet.Core" Version="2.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Select2.js" Version="4.0.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,5 +27,9 @@
     <Folder Include="Views\Location\" />
     <Folder Include="wwwroot\css\Location\" />
     <Folder Include="wwwroot\js\Location\" />
+    <Folder Include="Models\Admin\" />
+    <Folder Include="Views\Admin\" />
+    <Folder Include="Models\Schedule\" />
+    <Folder Include="Views\Schedule\" />
   </ItemGroup>
 </Project>

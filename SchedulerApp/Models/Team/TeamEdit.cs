@@ -137,7 +137,7 @@ namespace SchedulerApp.Models.Team
         public List<SelectListItem> TeamUsersSelectList { get; set; }
 
 
-        [Display(Name = "Team Users (hold cntrl to select)")]
+        [Display(Name = "Team Users")]
         public IEnumerable<Guid> TeamUserIds { get; set; }
 
         public string ModalTitle

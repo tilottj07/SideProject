@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
 
-    //$("#testing123").jQueryMultiSelection();
+
 
     setupGrid();
 
@@ -12,7 +12,7 @@ $(document).ready(function () {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
-          //  $('#TeamUserIds').jQueryMultiSelection();
+            setupSelectLists();
         });
     });
     
@@ -92,6 +92,13 @@ function editTeamModal(url) {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
+            setupSelectLists();
         });
     }
+}
+
+function setupSelectLists() {
+    $('#LocationId').select2();
+    $('#TeamLeaderId').select2();
+    $('#TeamUserIds').select2();
 }
