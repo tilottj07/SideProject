@@ -1,8 +1,9 @@
 ﻿
 $(document).ready(function () {
 
-
-
+    $('#TeamId').select2();
+    $('#SearchButton').click(function() { refreshGridData(); });
+    
     setupGrid();
 
     var placeholderElement = $('#modal-placeholder');
@@ -12,7 +13,6 @@ $(document).ready(function () {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
-            setupSelectLists();
         });
     });
     
@@ -30,14 +30,10 @@ $(document).ready(function () {
             var newBody = $('.modal-body', data);
             placeholderElement.find('.modal-body').replaceWith(newBody);
 
-
             var isValid = newBody.find('[name="IsValid"]').val() == 'True';
             if (isValid) {
                 placeholderElement.find('.modal').modal('hide');
                 reloadGridData();
-            }
-            else {
-                setupSelectLists();
             }
             
         });
@@ -46,7 +42,7 @@ $(document).ready(function () {
     placeholderElement.on('click', '[data-save="delete"]', function (event) {
         event.preventDefault();
         var form = $(this).parents('.modal').find('form');
-        var actionUrl = getUrlPrefix() + 'Team/_deleteTeam/' + $('#TeamId').val();
+        var actionUrl = getUrlPrefix() + 'Location/_deleteLocation/' + $('#LocationId').val();
         var dataToSend = form.serialize();
 
         $.post(actionUrl, dataToSend).done(function (data) {
@@ -57,52 +53,47 @@ $(document).ready(function () {
 });
 
 function setupGrid() {
-    var table = $('#teamsTable').DataTable({
+    var table = $('#schedulesTable').DataTable({
         "processing": false,
         "serverSide": false,
-        "ajax": getUrlPrefix() + "Team/_getTeamsGridData",
+        "ajax": getUrlPrefix() + "Schedule/_getSchedulesGridData/?startDate=" + $('#StartDate').val() + '&endDate=' + $('#EndDate').val() + '&teamId=' + $('#TeamId').val(),
         "columns": [
+            { "data": "displayName" },
             { "data": "teamName" },
-            { "data": "teamDescription" },
-            { "data": "teamLocation" },
-            { "data": "teamEmail" },
-            { "data": "teamLeader" },
+            { "data": "supportLevel" },
+            { "data": "startDate" },
+            { "data": "endDate" },
             { "defaultContent": "<button>Edit</button>" }
         ]
     });
 
-    $('#teamsTable tbody').on( 'click', 'button', function () {
+    $('#schedulesTable tbody').on( 'click', 'button', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        editTeam(data.teamId);
+        editLocation(data.locationId);
     });
 }
 
 function reloadGridData() {
-    $('#teamsTable').DataTable().ajax.reload();
+    $('#schedulesTable').DataTable().ajax.reload();
 }
 
 
-function editTeam(teamId) {
+function editLocation(locationId) {
 
-    var url = getUrlPrefix() + 'Team/EditTeamModal/' + teamId;
-    editTeamModal(url); 
+    var url = getUrlPrefix() + 'Location/EditLocationModal/' + locationId;
+    editLocationModal(url); 
 }
 
 
-function editTeamModal(url) {
+function editLocationModal(url) {
     var placeholderElement = $('#modal-placeholder');
 
     if (url != null) {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
-            setupSelectLists();
         });
     }
 }
 
-function setupSelectLists() {
-    $('#LocationId').select2();
-    $('#TeamLeaderId').select2();
-    $('#TeamUserIds').select2();
-}
+

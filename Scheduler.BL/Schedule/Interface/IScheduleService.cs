@@ -13,9 +13,9 @@ namespace Scheduler.BL.Schedule.Interface
         List<ISchedule> GetSchedulesByTeamId(Guid teamId, DateTime startDate, DateTime endDate);
         List<ISchedule> GetSchedulesByUserId(Guid userId, DateTime startDate, DateTime endDate);
 
-        List<ISchedule> GetTeamScheduleByInterval(Guid teamId, DateTime startDate, DateTime endDate, TimeInterval interval);
-        List<ISchedule> GetUserScheduleByInterval(Guid userId, DateTime startDate, DateTime endDate, TimeInterval interval);
-        List<ISchedule> GetAllSchedulesByInterval(DateTime startDate, DateTime endDate, TimeInterval interval);
+        List<IScheduleDisplay> GetTeamScheduleByInterval(Guid teamId, DateTime startDate, DateTime endDate, TimeInterval interval);
+        List<IScheduleDisplay> GetUserScheduleByInterval(Guid userId, DateTime startDate, DateTime endDate, TimeInterval interval);
+        List<IScheduleDisplay> GetAllSchedulesByInterval(DateTime startDate, DateTime endDate, TimeInterval interval);
 
         List<ISchedule> GetSchedules(DateTime startDate, DateTime endDate);
 

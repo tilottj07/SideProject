@@ -31,5 +31,7 @@
     <Folder Include="Views\Admin\" />
     <Folder Include="Models\Schedule\" />
     <Folder Include="Views\Schedule\" />
+    <Folder Include="wwwroot\css\Schedule\" />
+    <Folder Include="wwwroot\js\Schedule\" />
   </ItemGroup>
 </Project>

@@ -39,3 +39,7 @@ body {
 .full-screen {
     width: 100%;
 }
+
+.parameters div {
+    display: inline-block;
+}

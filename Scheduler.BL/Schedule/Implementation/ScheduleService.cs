@@ -36,21 +36,21 @@ namespace Scheduler.BL.Schedule.Implementation
             Month = 2
         }
 
-        public List<ISchedule> GetTeamScheduleByInterval(Guid teamId, DateTime startDate, DateTime endDate, TimeInterval interval)
+        public List<IScheduleDisplay> GetTeamScheduleByInterval(Guid teamId, DateTime startDate, DateTime endDate, TimeInterval interval)
         {
             return GroupScheduleByInterval(
                 GetSchedulesByTeamId(teamId, startDate, endDate), 
                     startDate, endDate, interval);
         }
 
-        public List<ISchedule> GetUserScheduleByInterval(Guid userId, DateTime startDate, DateTime endDate, TimeInterval interval)
+        public List<IScheduleDisplay> GetUserScheduleByInterval(Guid userId, DateTime startDate, DateTime endDate, TimeInterval interval)
         {
             return GroupScheduleByInterval(
                 GetSchedulesByUserId(userId, startDate, endDate),
                     startDate, endDate, interval);
         }
 
-        public List<ISchedule> GetAllSchedulesByInterval(DateTime startDate, DateTime endDate, TimeInterval interval)
+        public List<IScheduleDisplay> GetAllSchedulesByInterval(DateTime startDate, DateTime endDate, TimeInterval interval)
         {
             return GroupScheduleByInterval(
                 GetSchedules(startDate, endDate),
@@ -58,11 +58,13 @@ namespace Scheduler.BL.Schedule.Implementation
         }
 
 
-        private List<ISchedule> GroupScheduleByInterval(List<ISchedule> schedules, DateTime beginningDate, DateTime finishDate, TimeInterval interval)
+        private List<IScheduleDisplay> GroupScheduleByInterval(List<ISchedule> schedules, DateTime beginningDate, DateTime finishDate, TimeInterval interval)
         {
-            List<ISchedule> list = new List<ISchedule>();
+            List<IScheduleDisplay> scheduleDisplays = new List<IScheduleDisplay>();
             if (schedules.Count > 0)
             {
+                List<ISchedule> list = new List<ISchedule>();
+
                 int daysPerInterval = 1;
                 switch(interval)
                 {
@@ -98,8 +100,41 @@ namespace Scheduler.BL.Schedule.Implementation
 
                     startDate = endDate;
                 }
+
+                List<Guid> userIds = list.Select(x => x.UserId).Distinct().ToList();
+                List<Guid> teamIds = list.Select(x => x.TeamId).Distinct().ToList();
+
+                if (User == null) User = new UserService();
+                if (Team == null) Team = new TeamService();
+
+                var userDict = User.GetUsers(userIds).ToDictionary(x => x.UserId);
+                var teamDict = Team.GetTeams(teamIds).ToDictionary(x => x.TeamId);
+
+                foreach(var item in list)
+                {
+                    if (userDict.ContainsKey(item.UserId) && teamDict.ContainsKey(item.TeamId))
+                    {
+                        scheduleDisplays.Add(new ScheduleDisplayDto()
+                        {
+                            ChangeDate = item.ChangeDate,
+                            CreateDate = item.CreateDate,
+                            CreateUserId = item.CreateUserId,
+                            DeleteDate = item.DeleteDate,
+                            DisplayName = userDict[item.UserId].DisplayName,
+                            EndDate = item.EndDate,
+                            LastUpdateDate = item.LastUpdateDate,
+                            LastUpdateUserId = item.LastUpdateUserId,
+                            ScheduleId = item.ScheduleId,
+                            StartDate = item.StartDate,
+                            SupportLevel = item.SupportLevel,
+                            TeamId = item.TeamId,
+                            TeamName = teamDict[item.TeamId].TeamName,
+                            UserId = item.UserId
+                        });
+                    }
+                }
             }
-            return list;
+            return scheduleDisplays;
         }
 
 

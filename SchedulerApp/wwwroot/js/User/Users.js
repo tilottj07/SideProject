@@ -33,6 +33,9 @@ $(document).ready(function () {
                 placeholderElement.find('.modal').modal('hide');
                 reloadGridData();
             }
+            else {
+                setupSelectLists();
+            }
             
         });
     }); 
