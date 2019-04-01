@@ -146,6 +146,7 @@ namespace Scheduler.BL.Team.Implementation
                         item.LastUpdateDate = DateTime.UtcNow;
                         if (changeUserId.HasValue) item.LastUpdateUserId = changeUserId.Value.ToString();
                     }
+                    existingTeamIds.Add(Guid.Parse(item.TeamId));
                 }
 
                 foreach (Guid teamId in teamIds)
