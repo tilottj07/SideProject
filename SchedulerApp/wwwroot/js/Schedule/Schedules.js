@@ -2,7 +2,8 @@
 $(document).ready(function () {
 
     $('#TeamId').select2();
-    $('#SearchButton').click(function() { refreshGridData(); });
+    $('#SearchButton').click(function () { refreshGridData(); });
+
     
     setupGrid();
 
