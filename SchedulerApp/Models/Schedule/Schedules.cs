@@ -25,7 +25,7 @@ namespace SchedulerApp.Models.Schedule
         [Display(Name = "End")]
         public DateTime EndDate { get; set; }
 
-        public Guid TeamId { get; set; }
+        public Guid TeamIdParam { get; set; }
 
 
         public List<SelectListItem> TeamSelectList { get; set; }

@@ -60,7 +60,7 @@ namespace Scheduler.Testing.IntegrationTests
             LocationDto dto = new LocationDto()
             {
                 LocationId = Guid.NewGuid(),
-                LocationName = "Test Location"
+                LocationName = "Test Location 2"
             };
 
             Location.AddLocation(dto);
@@ -93,9 +93,13 @@ namespace Scheduler.Testing.IntegrationTests
 
         public void DeleteSeededTeam(Guid teamId)
         {
+            Guid locationId;
+
             var t = Team.GetTeam(teamId);
+            locationId = t.LocationId;
+
             Team.DeleteTeam(teamId);
-            DeleteSeededLocation(t.LocationId);
+            DeleteSeededLocation(locationId);
         }
 
 

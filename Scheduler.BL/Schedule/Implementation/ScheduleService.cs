@@ -357,12 +357,6 @@ namespace Scheduler.BL.Schedule.Implementation
 
             foreach(var item in schedules)
             {
-                if (!isAddNew && item.ScheduleId == Guid.Empty)
-                {
-                    result.IsSuccess = false;
-                    result.ErrorMessages.Add("Invalid ScheduleId");
-                }
-
                 if (item.StartDate > item.EndDate)
                 {
                     result.IsSuccess = false;

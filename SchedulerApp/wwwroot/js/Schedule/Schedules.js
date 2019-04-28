@@ -1,8 +1,10 @@
 ﻿
 $(document).ready(function () {
 
-    $('#TeamId').select2();
-    $('#SearchButton').click(function () { refreshGridData(); });
+    $('#TeamIdParam').select2();
+    $('#TeamIdParam').change(function(e) { reloadGridData(); });
+
+ 
 
     
     setupGrid();
@@ -14,6 +16,7 @@ $(document).ready(function () {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
+            instantiateModal();
         });
     });
     
@@ -36,6 +39,9 @@ $(document).ready(function () {
                 placeholderElement.find('.modal').modal('hide');
                 reloadGridData();
             }
+            else {
+                instantiateModal();
+            }
             
         });
     }); 
@@ -57,7 +63,12 @@ function setupGrid() {
     var table = $('#schedulesTable').DataTable({
         "processing": false,
         "serverSide": false,
-        "ajax": getUrlPrefix() + "Schedule/_getSchedulesGridData/?startDate=" + $('#StartDate').val() + '&endDate=' + $('#EndDate').val() + '&teamId=' + $('#TeamId').val(),
+        "createdRow": function( row, data, dataIndex){
+                if( data.isSelected ==  `true`){
+                    $(row).addClass('bg-warning');
+                }
+            },
+        "ajax": getUrlPrefix() + "Schedule/_getSchedulesGridData/?startDate=" + $('#StartDate').val() + '&endDate=' + $('#EndDate').val() + '&teamId=' + $('#TeamIdParam').val(),
         "columns": [
             { "data": "displayName" },
             { "data": "teamName" },
@@ -72,9 +83,11 @@ function setupGrid() {
         var data = table.row( $(this).parents('tr') ).data();
         editLocation(data.locationId);
     });
+
 }
 
 function reloadGridData() {
+    //alert('woot');
     $('#schedulesTable').DataTable().ajax.reload();
 }
 
@@ -93,8 +106,33 @@ function editLocationModal(url) {
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
+            instantiateModal();
         });
     }
+}
+
+function instantiateModal() {
+    $('#TeamId').select2();
+    $('#UserId').select2();
+    $('#SupportLevel').select2();
+
+    populateUserSelectList();
+
+    $("TeamId").change(function(e) { populateUserSelectList(); });
+}
+
+function populateUserSelectList() {
+    $.getJSON(getUrlPrefix() + "Schedule/GetTeamUsersSelectList/?teamId=" + $('#TeamId').val() + "&userId=" + $('#UserId').val(), function(data){
+        $('#UserId').empty();
+        $.each(data, function(index, value) {
+                if (value.selected == 'true') {
+                    $('#UserId').append('<option value="' + value.value + '" selected="selected">' + value.text + '</option>');
+                }
+                else {
+                    $('#UserId').append('<option value="' + value.value + '">' + value.text + '</option>');
+                }
+            });
+      });
 }
 
 

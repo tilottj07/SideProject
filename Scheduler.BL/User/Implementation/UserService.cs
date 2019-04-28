@@ -8,6 +8,8 @@ using Scheduler.BL.User.Dto;
 using Scheduler.BL.User.Interface;
 using Scheduler.BL.User.Interface.Models;
 using Scheduler.BL.Shared;
+using Scheduler.BL.Team.Interface;
+using Scheduler.BL.Team.Implementation;
 
 namespace Scheduler.BL.User.Implementation
 {
@@ -83,15 +85,11 @@ namespace Scheduler.BL.User.Implementation
         public List<IUser> GetTeamUsers(Guid teamId)
         {
             List<IUser> users = new List<IUser>();
-            using (var context = new Data.ScheduleContext())
-            {
-                var items = context.TeamUsers.Where(x => x.TeamId == teamId.ToString() && !x.DeleteDate.HasValue)
-                    .Include(x => x.User).Select(x => x.User);
-                foreach (var item in items)
-                {
-                    if (!item.DeleteDate.HasValue) users.Add(Mapper.Map<UserDto>(item));
-                }
-            }
+
+            if (TeamUser == null) TeamUser = new TeamUserService();
+
+            var teamMembers = TeamUser.GetTeamUsersByTeamId(teamId);
+            users = GetUsers(teamMembers.Select(x => x.UserId).ToList());
 
             return users;
         }
@@ -305,5 +303,7 @@ namespace Scheduler.BL.User.Implementation
 
             return result;
         }
+
+        private ITeamUserService TeamUser;
     }
 }

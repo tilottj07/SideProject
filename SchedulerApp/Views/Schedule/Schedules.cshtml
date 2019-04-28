@@ -11,27 +11,31 @@
 
 <div class="page-header">
     <span class="h3">Schedule</span>
-    <!--button type="button" class="btn btn-primary pull-right" data-toggle="ajax-modal" data-target="#add-location" data-url="@Url.Action("EditLocationModal")">
+    <button type="button" class="btn btn-primary pull-right" data-toggle="ajax-modal" data-target="#add-schedule" data-url="@Url.Action("EditScheduleModal")">
         Add Schedule
-    </button>-->
+    </button>
     
 </div>
 
-<div class="d-flex flex-row">
-    <div class="align-self-start">
-        <span>Team: </span>
-        <select asp-for="TeamId" asp-items="Model.TeamSelectList"></select>
+
+<div class="row">
+    <div class="col-xs-3">
+        <div class="input-group">
+            <span>Team: </span>
+            <select asp-for="TeamIdParam" asp-items="Model.TeamSelectList"></select>
+        </div>
     </div>
-    <div class="align-self-start">
-        <span>Start: </span>
-        <input asp-for="StartDate" />
+    <div class="col-xs-3">
+        <div class="input-group">
+            <span>Start: </span>
+            <input asp-for="StartDate" class="date" />
+        </div>
     </div>
-    <div class="p-2">
-        <span>End: </span>
-        <input asp-for="EndDate" />
-    </div>
-    <div class="p-2">
-        <button id="SearchButton" type="button" class="btn btn-primary">Search</button>
+    <div class="col-xs-3">
+        <div class="input-group">
+            <span>End: </span>
+            <input asp-for="EndDate" class="date" />
+        </div>
     </div>
 </div>
 

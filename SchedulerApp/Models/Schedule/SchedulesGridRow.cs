@@ -12,9 +12,11 @@ namespace SchedulerApp.Models.Schedule
             UserId = scheduleDisplay.UserId;
             DisplayName = scheduleDisplay.DisplayName;
             TeamName = scheduleDisplay.TeamName;
-            StartDate = new DateTime(scheduleDisplay.StartDate.Ticks, DateTimeKind.Utc);
-            EndDate = new DateTime(scheduleDisplay.EndDate.Ticks, DateTimeKind.Utc);
+            StartDate = scheduleDisplay.StartDate.ToLocalTime().ToString("MM/dd/yyyy hh:mm tt");
+            EndDate = scheduleDisplay.EndDate.ToLocalTime().ToString("MM/dd/yyyy hh:mm tt");
             SupportLevel = scheduleDisplay.SupportLevel.ToString();
+
+            IsSelected |= (DateTime.UtcNow >= scheduleDisplay.StartDate && DateTime.UtcNow <= scheduleDisplay.EndDate);
         }
 
         public Guid ScheduleId { get; set; }
@@ -22,8 +24,10 @@ namespace SchedulerApp.Models.Schedule
         public Guid UserId { get; set; }
         public string DisplayName { get; set; }
         public string TeamName { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public string SupportLevel { get; set; }
+
+        public bool IsSelected { get; set; }
     }
 }

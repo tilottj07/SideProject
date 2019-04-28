@@ -27,7 +27,7 @@ namespace Scheduler.Testing.IntegrationTests
         private const string TEST_MIDDLE_INITIAL = "M";
         private const string TEST_LAST_NAME = "Appleseed";
         private const string TEST_EMAIL = "testing@gamil.com";
-        private const string TEST_PHONE = "5551235555";
+        private const string TEST_PHONE = "555-123-5555";
 
 
         [TestMethod]

@@ -66,9 +66,11 @@ namespace Scheduler.Testing.IntegrationTests
             Assert.IsNotNull(team);
             Assert.AreEqual(TEST_TEAM_DESC_2, team.TeamDescription);
 
+            var removeResult = TeamService.DeleteTeam(team.TeamId);
+            Assert.IsTrue(removeResult.IsSuccess);
 
-            DeleteSeededLocation(locationDto.LocationId);
             DeleteSeededUser(userDto.UserId);
+            DeleteSeededLocation(locationDto.LocationId);
         }
 
         [TestMethod]
