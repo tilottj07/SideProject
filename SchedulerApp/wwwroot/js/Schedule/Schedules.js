@@ -2,9 +2,9 @@
 $(document).ready(function () {
 
     $('#TeamIdParam').select2();
-    $('#TeamIdParam').change(function(e) { reloadGridData(); });
-    $('#StartDate').change(function(e) { reloadGridData(); });
-    $('#EndDate').change(function(e) { reloadGridData(); });
+    $('#TeamIdParam').on('change', function(e) { reloadGridData(); });
+    $('#StartDateParam').on('change', function(e){ reloadGridData(); })
+    $('#EndDateParam').on('change', function(e){ reloadGridData(); })
     
     setupGrid();
 
@@ -68,7 +68,7 @@ function setupGrid() {
                     $(row).addClass('bg-warning');
                 }
             },
-        "ajax": getUrlPrefix() + "Schedule/_getSchedulesGridData/?startDate=" + $('#StartDate').val() + '&endDate=' + $('#EndDate').val() + '&teamId=' + $('#TeamIdParam').val(),
+        "ajax": getUrlPrefix() + "Schedule/_getSchedulesGridData/?startDate=" + $('#StartDateParam').val() + '&endDate=' + $('#EndDateParam').val() + '&teamId=' + $('#TeamIdParam').val(),
         "columns": [
             { "data": "displayName" },
             { "data": "teamName" },
@@ -89,7 +89,8 @@ function setupGrid() {
 }
 
 function reloadGridData() {
-    $('#schedulesTable').DataTable().ajax.reload();
+    var url = getUrlPrefix() + "Schedule/_getSchedulesGridData/?startDate=" + $('#StartDateParam').val() + '&endDate=' + $('#EndDateParam').val() + '&teamId=' + $('#TeamIdParam').val();
+    $('#schedulesTable').DataTable().ajax.url(url).ajax.reload();
 }
 
 
@@ -110,7 +111,7 @@ function instantiateModal() {
 
     populateUserSelectList();
 
-    $("TeamId").change(function(e) { populateUserSelectList(); });
+    $("TeamId").on('change', function(e) { populateUserSelectList(); });
 }
 
 function populateUserSelectList() {

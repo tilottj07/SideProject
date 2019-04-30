@@ -11,19 +11,19 @@ namespace SchedulerApp.Models.Schedule
     {
         public Schedules(List<ITeam> teams)
         {
-            StartDate = DateTime.Today;
-            EndDate = StartDate.AddDays(8).AddMinutes(-1);
+            StartDateParam = DateTime.Today;
+            EndDateParam = StartDateParam.AddDays(8).AddMinutes(-1);
 
             FillTeamSelectList(teams);
         }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Start")]
-        public DateTime StartDate { get; set; }
+        public DateTime StartDateParam { get; set; }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "End")]
-        public DateTime EndDate { get; set; }
+        public DateTime EndDateParam { get; set; }
 
         public Guid TeamIdParam { get; set; }
 
