@@ -114,23 +114,26 @@ namespace Scheduler.BL.Schedule.Implementation
                 {
                     if (userDict.ContainsKey(item.UserId) && teamDict.ContainsKey(item.TeamId))
                     {
-                        scheduleDisplays.Add(new ScheduleDisplayDto()
+                        if ((item.EndDate - item.StartDate).TotalMinutes > 0)
                         {
-                            ChangeDate = item.ChangeDate,
-                            CreateDate = item.CreateDate,
-                            CreateUserId = item.CreateUserId,
-                            DeleteDate = item.DeleteDate,
-                            DisplayName = userDict[item.UserId].DisplayName,
-                            EndDate = item.EndDate,
-                            LastUpdateDate = item.LastUpdateDate,
-                            LastUpdateUserId = item.LastUpdateUserId,
-                            ScheduleId = item.ScheduleId,
-                            StartDate = item.StartDate,
-                            SupportLevel = item.SupportLevel,
-                            TeamId = item.TeamId,
-                            TeamName = teamDict[item.TeamId].TeamName,
-                            UserId = item.UserId
-                        });
+                            scheduleDisplays.Add(new ScheduleDisplayDto()
+                            {
+                                ChangeDate = item.ChangeDate,
+                                CreateDate = item.CreateDate,
+                                CreateUserId = item.CreateUserId,
+                                DeleteDate = item.DeleteDate,
+                                DisplayName = userDict[item.UserId].DisplayName,
+                                EndDate = item.EndDate,
+                                LastUpdateDate = item.LastUpdateDate,
+                                LastUpdateUserId = item.LastUpdateUserId,
+                                ScheduleId = item.ScheduleId,
+                                StartDate = item.StartDate,
+                                SupportLevel = item.SupportLevel,
+                                TeamId = item.TeamId,
+                                TeamName = teamDict[item.TeamId].TeamName,
+                                UserId = item.UserId
+                            });
+                        }
                     }
                 }
             }
@@ -234,7 +237,7 @@ namespace Scheduler.BL.Schedule.Implementation
                                 {
                                     //scenarios
                                     // #1 - the new record overlaps the existing record completely. In this case we can just mark it deleted.
-                                    if (item.StartDate < overlap.StartDate && item.EndDate > overlap.EndDate)
+                                    if (item.StartDate <= overlap.StartDate && item.EndDate >= overlap.EndDate)
                                     {
                                         ScheduleDto update = FillScheduleDto(overlap);
                                         update.DeleteDate = DateTime.UtcNow;
@@ -245,7 +248,7 @@ namespace Scheduler.BL.Schedule.Implementation
 
                                     // #2 - the new record starts after the existing record's start date and the new record's end date is later than existing record's end date
                                     //      In this case, we adjust the end date of the existing record to match the new record's start date.
-                                    else if (item.StartDate > overlap.StartDate && item.EndDate > overlap.EndDate)
+                                    else if (item.StartDate > overlap.StartDate && item.EndDate > overlap.EndDate && overlap.EndDate != item.StartDate)
                                     {
                                         ScheduleDto update = FillScheduleDto(overlap);
                                         update.EndDate = item.StartDate;
@@ -256,7 +259,7 @@ namespace Scheduler.BL.Schedule.Implementation
 
                                     // #3 - the new record starts after the existing record starts AND ends before the existing record ends.
                                     //      In this case, the existing record needs to be split into 2 records with the new record sandwiched inbetween. 
-                                    else if (item.StartDate > overlap.StartDate && item.EndDate < overlap.EndDate)
+                                    else if (item.StartDate >= overlap.StartDate && item.EndDate <= overlap.EndDate)
                                     {
                                         ScheduleDto update = FillScheduleDto(overlap);
                                         update.EndDate = item.StartDate;
@@ -288,27 +291,36 @@ namespace Scheduler.BL.Schedule.Implementation
                         }
                     }
 
+                    //depending on what the user inputs, it is possible the start date = end date.  
+                    //in that scenario either don't add the record or mark it deleted.
 
                     foreach(var add in adds)
                     {
-                        context.Schedules.Add(new Domain.Schedule()
+                        if ((add.EndDate - add.StartDate).TotalMinutes > 0)
                         {
-                            ScheduleId = add.ScheduleId == Guid.Empty ? Guid.NewGuid().ToString() : add.ScheduleId.ToString(),
-                            TeamId = add.TeamId.ToString(),
-                            UserId = add.UserId.ToString(),
-                            StartDate = add.StartDate,
-                            EndDate = add.EndDate,
-                            SupportLevel = (int)add.SupportLevel,
-                            CreateDate = DateTime.UtcNow,
-                            CreateUserId = add.CreateUserId.ToString(),
-                            LastUpdateDate = DateTime.UtcNow,
-                            LastUpdateUserId = add.LastUpdateUserId.ToString(),
-                            DeleteDate = add.DeleteDate
-                        });
+                            context.Schedules.Add(new Domain.Schedule()
+                            {
+                                ScheduleId = add.ScheduleId == Guid.Empty ? Guid.NewGuid().ToString() : add.ScheduleId.ToString(),
+                                TeamId = add.TeamId.ToString(),
+                                UserId = add.UserId.ToString(),
+                                StartDate = add.StartDate,
+                                EndDate = add.EndDate,
+                                SupportLevel = (int)add.SupportLevel,
+                                CreateDate = DateTime.UtcNow,
+                                CreateUserId = add.CreateUserId.ToString(),
+                                LastUpdateDate = DateTime.UtcNow,
+                                LastUpdateUserId = add.LastUpdateUserId.ToString(),
+                                DeleteDate = add.DeleteDate
+                            });
+                        }
                     }
 
                     foreach(var update in updates)
                     {
+                        DateTime? deleteDate = update.DeleteDate;
+                        if (!deleteDate.HasValue && (update.EndDate - update.StartDate).TotalMinutes <= 0)
+                            deleteDate = DateTime.UtcNow;
+
                         context.Schedules.Update(new Domain.Schedule()
                         {
                             ScheduleId = update.ScheduleId.ToString(),
@@ -319,7 +331,7 @@ namespace Scheduler.BL.Schedule.Implementation
                             SupportLevel = (int)update.SupportLevel,
                             LastUpdateDate = DateTime.UtcNow,
                             LastUpdateUserId = update.LastUpdateUserId.ToString(),
-                            DeleteDate = update.DeleteDate
+                            DeleteDate = deleteDate
                         });
                     }
 
@@ -407,6 +419,34 @@ namespace Scheduler.BL.Schedule.Implementation
                 if (item != null)
                 {
                     context.Schedules.Remove(item);
+                    context.SaveChanges();
+                }
+            }
+            return result;
+        }
+
+        public ChangeResult MarkScheduleDeleted(Guid scheduleId)
+        {
+            ChangeResult result = new ChangeResult();
+
+            var update = GetSchedule(scheduleId);
+            using(var context = new Data.ScheduleContext())
+            {
+                if (update != null && !update.DeleteDate.HasValue)
+                {
+                    context.Schedules.Update(new Domain.Schedule
+                    {
+                        ScheduleId = update.ScheduleId.ToString(),
+                        TeamId = update.TeamId.ToString(),
+                        UserId = update.UserId.ToString(),
+                        StartDate = update.StartDate,
+                        EndDate = update.EndDate,
+                        SupportLevel = (int)update.SupportLevel,
+                        LastUpdateDate = DateTime.UtcNow,
+                        LastUpdateUserId = update.LastUpdateUserId.ToString(),
+                        DeleteDate = DateTime.UtcNow
+                    });
+
                     context.SaveChanges();
                 }
             }

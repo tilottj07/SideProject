@@ -32,7 +32,8 @@ namespace SchedulerApp.Models.Schedule
                 UserId = schedule.UserId;
                 SupportLevel = schedule.SupportLevel;
                 StartDate = schedule.StartDate.ToLocalTime();
-                EndDate = schedule.EndDate.ToLocalTime(); 
+                EndDate = schedule.EndDate.ToLocalTime();
+                UserIdPlaceholder = schedule.UserId;
             }
 
             FillTeamSelectList(teams);
@@ -60,6 +61,8 @@ namespace SchedulerApp.Models.Schedule
         public List<SelectListItem> TeamSelectList { get; set; }
         public List<SelectListItem> UserSelectList { get; set; }
         public List<SelectListItem> SupportLevelSelectList { get; set; }
+
+        public Guid UserIdPlaceholder { get; set; }
 
         public string ModalTitle
         {

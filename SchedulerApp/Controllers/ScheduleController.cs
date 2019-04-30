@@ -59,7 +59,7 @@ namespace SchedulerApp.Controllers
             else if (userId.HasValue) displays = ScheduleService.GetUserScheduleByInterval(userId.Value, startDate, endDate, TimeInterval.Day);
             else displays = ScheduleService.GetAllSchedulesByInterval(startDate, endDate, TimeInterval.Day);
 
-            foreach (var item in displays.OrderBy(x => x.StartDate))
+            foreach (var item in displays)
                 rows.Add(new Models.Schedule.SchedulesGridRow(item));
 
             return Json(new { data = rows });
@@ -114,6 +114,18 @@ namespace SchedulerApp.Controllers
                 list.Add(new SelectListItem() { Selected = userId == user.UserId, Text = user.DisplayName, Value = user.UserId.ToString() });
 
             return Json(list);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteSchedule(string id)
+        {
+            ChangeResult result = new ChangeResult();
+
+            Guid? scheduleId = Helper.ConvertToGuid(id);
+            if (scheduleId.HasValue)          
+                result = ScheduleService.DeleteSchedule(scheduleId.Value);
+
+            return Json(result);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Scheduler.BL.Schedule.Interface
         ChangeResult SaveSchedule(List<ISchedule> schedules);
 
         ChangeResult DeleteSchedule(Guid scheduleId);
+        ChangeResult MarkScheduleDeleted(Guid scheduleId);
 
     }
 }

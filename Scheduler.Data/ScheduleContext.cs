@@ -8,10 +8,6 @@ namespace Scheduler.Data
 {
     public class ScheduleContext : DbContext
     {
-        public ScheduleContext()
-        {
-
-        }
 
         public void Migrate()
         {

@@ -3,9 +3,8 @@ $(document).ready(function () {
 
     $('#TeamIdParam').select2();
     $('#TeamIdParam').change(function(e) { reloadGridData(); });
-
- 
-
+    $('#StartDate').change(function(e) { reloadGridData(); });
+    $('#EndDate').change(function(e) { reloadGridData(); });
     
     setupGrid();
 
@@ -63,6 +62,7 @@ function setupGrid() {
     var table = $('#schedulesTable').DataTable({
         "processing": false,
         "serverSide": false,
+        "pageLength": 50,
         "createdRow": function( row, data, dataIndex){
                 if( data.isSelected ==  `true`){
                     $(row).addClass('bg-warning');
@@ -75,41 +75,33 @@ function setupGrid() {
             { "data": "supportLevel" },
             { "data": "startDate" },
             { "data": "endDate" },
-            { "defaultContent": "<button>Edit</button>" }
+            { "defaultContent": "<button>Remove</button>" }
         ]
     });
 
+    table.order( [ 3, 'asc' ] )
+
     $('#schedulesTable tbody').on( 'click', 'button', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        editLocation(data.locationId);
+        deleteSchedule(data.scheduleId);
     });
 
 }
 
 function reloadGridData() {
-    //alert('woot');
     $('#schedulesTable').DataTable().ajax.reload();
 }
 
 
-function editLocation(locationId) {
+function deleteSchedule(scheduleId) {
 
-    var url = getUrlPrefix() + 'Location/EditLocationModal/' + locationId;
-    editLocationModal(url); 
+    var url = getUrlPrefix() + 'Schedule/DeleteSchedule/' + scheduleId;
+    $.post(url, function( data ) {
+        reloadGridData();
+    });
 }
 
 
-function editLocationModal(url) {
-    var placeholderElement = $('#modal-placeholder');
-
-    if (url != null) {
-        $.get(url).done(function (data) {
-            placeholderElement.html(data);
-            placeholderElement.find('.modal').modal('show');
-            instantiateModal();
-        });
-    }
-}
 
 function instantiateModal() {
     $('#TeamId').select2();
@@ -122,10 +114,11 @@ function instantiateModal() {
 }
 
 function populateUserSelectList() {
-    $.getJSON(getUrlPrefix() + "Schedule/GetTeamUsersSelectList/?teamId=" + $('#TeamId').val() + "&userId=" + $('#UserId').val(), function(data){
+    //alert('woot');
+    $.getJSON(getUrlPrefix() + "Schedule/GetTeamUsersSelectList/?teamId=" + $('#TeamId').val() + "&userId=" + $('#UserIdPlaceholder').val(), function(data){
         $('#UserId').empty();
-        $.each(data, function(index, value) {
-                if (value.selected == 'true') {
+        $.each(data, function(index, value) {        
+            if (value.selected == true) {
                     $('#UserId').append('<option value="' + value.value + '" selected="selected">' + value.text + '</option>');
                 }
                 else {
