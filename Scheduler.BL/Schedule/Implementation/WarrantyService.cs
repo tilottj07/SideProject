@@ -80,6 +80,40 @@ namespace Scheduler.BL.Schedule.Implementation
             return warranties;
         }
 
+        public IWarrantyDisplay GetWarrantyDisplay(Guid warrantyId)
+        {
+            IWarrantyDisplay data = null;
+
+            var warranty = GetWarranty(warrantyId);
+            if (warranty != null)
+            {
+                data = FillWarrantyDisplay(new List<IWarranty> { warranty }).FirstOrDefault();
+            }
+
+            return data;
+        }
+
+        private List<IWarrantyDisplay> FillWarrantyDisplay(List<IWarranty> warranties)
+        {
+            List<IWarrantyDisplay> list = new List<IWarrantyDisplay>();
+
+            if (Team == null) Team = new TeamService();
+            if (User == null) User = new UserService();
+
+            var userDict = User.GetUsers(warranties.Select(x => x.UserId).ToList()).ToDictionary(x => x.UserId);
+            var teamDict = Team.GetTeams(warranties.Select(x => x.TeamId).ToList()).ToDictionary(x => x.TeamId);
+
+            foreach(var warranty in warranties)
+            {
+                string teamName = teamDict.ContainsKey(warranty.TeamId) ? teamDict[warranty.TeamId].TeamName : string.Empty;
+                string userDisplayName = userDict.ContainsKey(warranty.UserId) ? userDict[warranty.UserId].DisplayName : string.Empty;
+
+                list.Add(FillWarrantyDisplay(warranty, teamName, userDisplayName));
+            }
+
+            return list;
+        }
+
         public ChangeResult AddWarranty(IWarranty warranty)
         {
             return AddWarranty(new List<IWarranty> { warranty });
@@ -231,6 +265,24 @@ namespace Scheduler.BL.Schedule.Implementation
                 }
             }
             return result;
+        }
+
+
+
+        private WarrantyDisplayDto FillWarrantyDisplay(IWarranty warranty, string teamName, string userDisplayName)
+        {
+            return new WarrantyDisplayDto()
+            {
+                EndDate = warranty.EndDate,
+                StartDate = warranty.StartDate,
+                TeamId = warranty.TeamId,
+                UserId = warranty.UserId,
+                WarrantyId = warranty.WarrantyId,
+                WarrantyName = warranty.WarrantyName,
+                WarrentyDescription = warranty.WarrentyDescription,
+                TeamName = teamName,
+                UserDisplayName = userDisplayName
+            };
         }
 
     }
