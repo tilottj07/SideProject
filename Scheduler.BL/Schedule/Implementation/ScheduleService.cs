@@ -494,7 +494,7 @@ namespace Scheduler.BL.Schedule.Implementation
                 DateTime? priorEnd = null;
                 int? priorLevel = null;
 
-                foreach(var item in items.OrderBy(x => x.SupportLevel).ThenBy(x => x.StartDate))
+                foreach(var item in items.OrderBy(x => x.SupportLevel).ThenBy(x => x.StartDate).ThenByDescending(x => x.CreateDate))
                 {
                     if (item.StartDate == priorStart && item.EndDate == priorEnd && item.SupportLevel == priorLevel)
                     {

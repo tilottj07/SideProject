@@ -33,5 +33,9 @@
     <Folder Include="Views\Schedule\" />
     <Folder Include="wwwroot\css\Schedule\" />
     <Folder Include="wwwroot\js\Schedule\" />
+    <Folder Include="Models\Warranty\" />
+    <Folder Include="wwwroot\css\Warranty\" />
+    <Folder Include="wwwroot\js\Warranty\" />
+    <Folder Include="Views\Warranty\" />
   </ItemGroup>
 </Project>
