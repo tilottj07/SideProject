@@ -45,17 +45,6 @@ $(document).ready(function () {
         });
     }); 
 
-    placeholderElement.on('click', '[data-save="delete"]', function (event) {
-        event.preventDefault();
-        var form = $(this).parents('.modal').find('form');
-        var actionUrl = getUrlPrefix() + 'Location/_deleteLocation/' + $('#LocationId').val();
-        var dataToSend = form.serialize();
-
-        $.post(actionUrl, dataToSend).done(function (data) {
-            placeholderElement.find('.modal').modal('hide');
-            reloadGridData();
-        });
-    });
 });
 
 function setupGrid() {

@@ -218,6 +218,7 @@ namespace Scheduler.BL.Schedule.Implementation
                     teamDict[item.TeamId].Add(item);
                 }
 
+
                 using (var context = new Data.ScheduleContext())
                 {
                     List<ISchedule> adds = new List<ISchedule>();
@@ -336,6 +337,11 @@ namespace Scheduler.BL.Schedule.Implementation
                     }
 
                     context.SaveChanges();
+                }
+
+                foreach(Guid teamId in teamDict.Keys)
+                {
+                    FixPotentialDuplications(teamId, teamDict[teamId].Select(x => x.StartDate).Min(), teamDict[teamId].Select(x => x.StartDate).Max());
                 }
 
                 PurgeOldDeletedRecords();
@@ -465,7 +471,45 @@ namespace Scheduler.BL.Schedule.Implementation
             }
         }
 
+        /// <summary>
+        /// Fixs the potential duplications. 
+        /// In an attempt to always make what the user enters part of the new schedule, there is the potential for duplications to sneak in.
+        /// This fixes them.
+        /// </summary>
+        /// <param name="teamId">Team identifier.</param>
+        /// <param name="startDate">Start date.</param>
+        /// <param name="endDate">End date.</param>
+        private void FixPotentialDuplications(Guid teamId, DateTime startDate, DateTime endDate)
+        {
+            using (var context = new Data.ScheduleContext())
+            {
+                var items = context.Schedules.Where(x => x.TeamId == teamId.ToString()
+                    && ((x.StartDate >= startDate && x.StartDate <= endDate)
+                        || (x.EndDate >= startDate && x.EndDate <= endDate)
+                        || (x.StartDate <= startDate && x.EndDate >= endDate))
+                    && !x.DeleteDate.HasValue).ToList();
 
+                bool hasItemsToRemove = false;
+                DateTime? priorStart = null;
+                DateTime? priorEnd = null;
+                int? priorLevel = null;
+
+                foreach(var item in items.OrderBy(x => x.SupportLevel).ThenBy(x => x.StartDate))
+                {
+                    if (item.StartDate == priorStart && item.EndDate == priorEnd && item.SupportLevel == priorLevel)
+                    {
+                        context.Schedules.Remove(item);
+                        hasItemsToRemove = true;
+                    }
+
+                    priorLevel = item.SupportLevel;
+                    priorStart = item.StartDate;
+                    priorEnd = item.EndDate;
+                }
+
+                if (hasItemsToRemove) context.SaveChanges();
+            }
+        }
 
 
         private ScheduleDto FillScheduleDto(ISchedule schedule)
