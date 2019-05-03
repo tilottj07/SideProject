@@ -1,3 +1,56 @@
-﻿@page
+﻿@model SchedulerApp.Models.Warranty.Warranties
+
+<link rel="stylesheet" href="~/css/Warranty/Warranties.css" />
+<script src="~/js/Warranty/Warranties.js"></script>
+
 @{
+    Layout = "_Layout";
 }
+
+<div id="modal-placeholder"></div>
+
+<div class="page-header">
+    <span class="h3">Warranties</span>
+    <button type="button" class="btn btn-primary pull-right" data-toggle="ajax-modal" data-target="#add-schedule" data-url="@Url.Action("EditScheduleModal")">
+        Add Warranty
+    </button>
+
+</div>
+
+
+<div class="row">
+    <div class="col-xs-3">
+        <div class="input-group">
+            <span>Team: </span>
+            <select asp-for="TeamIdParam" asp-items="Model.TeamSelectList"></select>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <div class="input-group">
+            <span>Start: </span>
+            <input asp-for="StartDateParam" class="date" />
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <div class="input-group">
+            <span>End: </span>
+            <input asp-for="EndDateParam" class="date" />
+        </div>
+    </div>
+</div>
+
+<table id="warrantiesTable" class="table table-striped table-bordered compact" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>User</th>
+            <th>Team</th>
+            <th>Start</th>
+            <th>End</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+

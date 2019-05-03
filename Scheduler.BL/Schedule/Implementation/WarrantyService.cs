@@ -82,15 +82,26 @@ namespace Scheduler.BL.Schedule.Implementation
 
         public IWarrantyDisplay GetWarrantyDisplay(Guid warrantyId)
         {
-            IWarrantyDisplay data = null;
-
             var warranty = GetWarranty(warrantyId);
-            if (warranty != null)
-            {
-                data = FillWarrantyDisplay(new List<IWarranty> { warranty }).FirstOrDefault();
-            }
+            return FillWarrantyDisplay(new List<IWarranty> { warranty }).FirstOrDefault();
+        }
 
-            return data;
+        public List<IWarrantyDisplay> GetWarranyDisplaysByTeamId(Guid teamId, DateTime startDate, DateTime endDate)
+        {
+            var items = GetWarrantiesByTeamId(teamId, startDate, endDate);
+            return FillWarrantyDisplay(items);
+        }
+
+        public List<IWarrantyDisplay> GetWarranyDisplaysByUserId(Guid userId, DateTime startDate, DateTime endDate)
+        {
+            var items = GetWarrantiesByUserId(userId, startDate, endDate);
+            return FillWarrantyDisplay(items);
+        }
+
+        public List<IWarrantyDisplay> GetWarrantyDisplays(DateTime startDate, DateTime endDate)
+        {
+            var items = GetWarranties(startDate, endDate);
+            return FillWarrantyDisplay(items);
         }
 
         private List<IWarrantyDisplay> FillWarrantyDisplay(List<IWarranty> warranties)
