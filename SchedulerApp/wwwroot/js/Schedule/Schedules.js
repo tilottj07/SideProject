@@ -63,8 +63,7 @@ function setupGrid() {
             { "data": "teamName" },
             { "data": "supportLevel" },
             { "data": "startDate" },
-            { "data": "endDate" },
-            { "defaultContent": "<button>Remove</button>" }
+            { "data": "endDate" }
         ]
     });
 
@@ -72,7 +71,7 @@ function setupGrid() {
 
     $('#schedulesTable tbody').on( 'click', 'button', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        deleteSchedule(data.scheduleId);
+        deleteSchedule(data.scheduleId, data.startDate, data.endDate);
     });
 
 }
@@ -83,9 +82,10 @@ function reloadGridData() {
 }
 
 
-function deleteSchedule(scheduleId) {
+function deleteSchedule(scheduleId, startDate, endDate) {
 
-    var url = getUrlPrefix() + 'Schedule/DeleteSchedule/' + scheduleId;
+    var url = getUrlPrefix() + 'Schedule/DeleteSchedule/?scheduleId=' + scheduleId + "&startDate=" + escape(startDate) + "&endDate=" + escape(endDate);
+    alert(url);
     $.post(url, function( data ) {
         reloadGridData();
     });

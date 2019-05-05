@@ -116,14 +116,35 @@ namespace SchedulerApp.Controllers
             return Json(list);
         }
 
+        /// <summary>
+        /// Deletes the schedule. (not currently used)
+        /// </summary>
+        /// <returns>The schedule.</returns>
+        /// <param name="scheduleId">Schedule identifier.</param>
+        /// <param name="startDate">Start date.</param>
+        /// <param name="endDate">End date.</param>
         [HttpPost]
-        public IActionResult DeleteSchedule(string id)
+        public IActionResult DeleteSchedule(Guid scheduleId, DateTime startDate, DateTime endDate)
         {
             ChangeResult result = new ChangeResult();
 
-            Guid? scheduleId = Helper.ConvertToGuid(id);
-            if (scheduleId.HasValue)          
-                result = ScheduleService.DeleteSchedule(scheduleId.Value);
+            var item = ScheduleService.GetSchedule(scheduleId);
+            if (item != null)
+            {
+                ScheduleDto dto = new ScheduleDto
+                {
+                    ScheduleId = item.ScheduleId,
+                    StartDate = startDate.ToUniversalTime(),
+                    EndDate = endDate.ToUniversalTime(),
+                    TeamId = item.TeamId,
+                    CreateDate = item.CreateDate,
+                    CreateUserId = item.CreateUserId,
+                    SupportLevel = item.SupportLevel,
+                    UserId = item.UserId,
+                    DeleteDate = DateTime.UtcNow
+                };
+                result = ScheduleService.SaveSchedule(dto);
+            }
 
             return Json(result);
         }

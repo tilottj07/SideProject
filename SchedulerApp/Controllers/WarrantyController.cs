@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Scheduler.BL.Schedule.Implementation;
 using Scheduler.BL.Schedule.Interface;
 using Scheduler.BL.Schedule.Interface.Models;
+using Scheduler.BL.Shared;
 using Scheduler.BL.Team.Implementation;
 using Scheduler.BL.Team.Interface;
 
@@ -29,13 +30,13 @@ namespace SchedulerApp.Controllers
             return RedirectToAction("Warranties");
         }
 
-        public ActionResult Warranties()
+        public IActionResult Warranties()
         {
             Models.Warranty.Warranties vm = new Models.Warranty.Warranties(TeamService.GetTeams());
             return View(vm);
         }
 
-        public ActionResult GetWarrantiesGridData(DateTime startDate, DateTime endDate, Guid? teamId)
+        public IActionResult GetWarrantiesGridData(DateTime startDate, DateTime endDate, Guid? teamId)
         {
             List<Models.Warranty.WarrantiesGridRow> rows = new List<Models.Warranty.WarrantiesGridRow>();
             List<IWarrantyDisplay> displays;
@@ -47,6 +48,16 @@ namespace SchedulerApp.Controllers
                 rows.Add(new Models.Warranty.WarrantiesGridRow(item));
 
             return Json(new { data = rows });
+        }
+
+        public IActionResult EditWarrantyModal(string id)
+        {
+            Guid? warrantyId = Helper.ConvertToGuid(id);
+            var teams = TeamService.GetTeams();
+
+            Models.Warranty.EditWarranty model = new Models.Warranty.EditWarranty(teams);
+
+            return PartialView("_WarrantyEditPartial", model);
         }
     }
 }
