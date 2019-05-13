@@ -1,0 +1,66 @@
+﻿@model SchedulerApp.Models.Warranty.EditWarranty
+<!-- Modal -->
+<div class="modal fade" id="add-warranty" role="dialog" aria-labelledby="addWarrantyLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="addWarrantyLabel">@Model.ModalTitle</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form asp-action="EditWarrantyModal">
+
+                    @Html.HiddenFor(x => x.WarrantyId)
+                    @Html.HiddenFor(x => x.UserIdPlaceholder)
+                    @Html.HiddenFor(x => x.IsAddNew)
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+
+                    <div class="form-group">
+                        <label asp-for="WarrantyName"></label>
+                        <input asp-for="WarrantyName" class="form-control" />
+                        <span asp-validation-for="WarrantyName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="WarrentyDescription"></label>
+                        <textarea asp-for="WarrentyDescription" class="form-control">@Model.WarrentyDescription</textarea>
+                        <span asp-validation-for="WarrentyDescription" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="StartDate"></label>
+                        <input asp-for="StartDate" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="EndDate"></label>
+                        <input asp-for="EndDate" class="form-control" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="TeamId"></label>
+                        <select class="form-control" style="width: 100%" asp-for="TeamId"
+                                asp-items="Model.TeamSelectList"></select>
+                        <span asp-validation-for="TeamId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="UserId"></label>
+                        <select class="form-control" style="width: 100%" asp-for="UserId"
+                                asp-items="Model.UserSelectList"></select>
+                        <span asp-validation-for="UserId" class="text-danger"></span>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
